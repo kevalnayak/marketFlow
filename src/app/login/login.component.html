@@ -1,0 +1,52 @@
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100 p-l-60 p-r-60 p-t-30 p-b-50">
+            <form class="login100-form validate-form" [formGroup]="loginForm">
+                <span class="login100-form-title p-b-20">
+                    <h3 class="templateName">Template Market</h3>
+                    <h4 class="pt-2 adminLogin">Admin login</h4>
+                </span>
+
+                <div class="wrap-input100 validate-input m-b-16">
+                    <input class="form-control input100" type="text" name="email" placeholder="Username"
+                        formControlName="userid" />
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <span class="lnr"><img src="assets/icons/account_icon.png"></span>
+                    </span>
+                </div>
+                <div style="position: relative; bottom: 10px;color: red;"
+                    *ngIf="loginFormControl.userid.invalid && (loginFormControl.userid.dirty || loginFormControl.userid.touched)">
+                    Username is required</div>
+
+                <div class="wrap-input100 validate-input m-b-16">
+                    <input class="form-control input100" type="password" name="pass" placeholder="Password"
+                        formControlName="password" />
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <span class="lnr"><img src="assets/icons/password_lock_icon.png"></span>
+                    </span>
+                </div>
+                <div style="position: relative; bottom: 10px;color: red;"
+                    *ngIf="loginFormControl.password.invalid && (loginFormControl.password.dirty || loginFormControl.password.touched)">
+                    Password is required</div>
+
+                <div class="contact100-form-checkbox">
+                    <div class="container-login100-form-btn p-t-10 w-full" (click)="login()">
+                        <button class="login100-form-btn">
+                            Login
+                        </button>
+                    </div>
+                </div>
+
+                <!-- <div class="text-center w-full p-t-115">
+                    
+
+                    <a class="txt1 bo1 hov1" href="#">
+                        Sign up now							
+                    </a>
+                </div> -->
+            </form>
+        </div>
+    </div>
+</div>
