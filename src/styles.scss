@@ -1983,7 +1983,76 @@ progress {
 }
 
 .form-label {
-	margin-bottom: .5rem
+	margin-bottom: .5rem;
+    color: #fff;
+}
+.cancel {
+    float: right;
+    right: 0px;
+    background-color: #FA0000;
+    padding: 10px 20px;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.select {
+    float: right;
+    right: 0px;
+    background-color: #1FA8D7;
+    padding: 10px 20px;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.detail-form {
+    background-color: #EEEEEE;
+    width: 100%;
+    float: left;
+    height: 100%;
+    border: 1px solid #cacaca;
+}
+
+.form-label-name {
+    margin-bottom: .5rem;
+    color: #666666;
+    font-weight: 700;
+    float: left;
+    width: 100%;
+}
+
+.form-control-name {
+    display: block;
+    width: 100%;
+    padding: .25rem .7rem;
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #AAAAAA;
+    background-color: #FAFAFA;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: .2rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.img-privew {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.img-privew img {
+    display: table;
+    text-align: center;
+    margin: 0 auto;
+}
+
+img.drp-dwn {
+    width: 30px;
+    margin-left: 10px;
 }
 
 .col-form-label {
@@ -2213,22 +2282,22 @@ textarea.form-control-lg {
 
 .form-select {
 	display: block;
-	width: 100%;
-	padding: .25rem 2.1rem .25rem .7rem;
-	font-size: .875rem;
-	font-weight: 400;
-	line-height: 1.5;
-	color: #495057;
-	background-color: #fff;
-	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
-	background-repeat: no-repeat;
-	background-position: right .7rem center;
-	background-size: 16px 12px;
-	border: 1px solid #ced4da;
-	border-radius: .2rem;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none
+    width: 100%;
+    padding: .25rem 2.1rem .25rem .7rem;
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #ffffff;
+    background-color: #29363d;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right .7rem center;
+    background-size: 16px 12px;
+    border: 1px solid #1FA8D7;
+    border-radius: .2rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 .form-select:focus {
@@ -2297,7 +2366,7 @@ textarea.form-control-lg {
 }
 
 .form-check-input[type=checkbox] {
-	border-radius: .25em
+	border-radius: .0em
 }
 
 .form-check-input[type=radio] {
@@ -28143,4 +28212,53 @@ opacity: 0.9;
 .my-float img
 {margin-top:10px;
 	width: 60%;
+}
+
+.form-check-input {
+    width: 1.5em;
+    height: 1.5em;
+    margin-top: .25em;
+    margin: 0.20rem .50rem;
+    vertical-align: top;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: contain;
+    border: 1px solid rgba(0, 0, 0, .25);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+}
+.form-select-name {
+    display: block;
+    width: 100%;
+    padding: .25rem 2.1rem .25rem .7rem;
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #757575;
+    background-color: #fafafa;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right .7rem center;
+    background-size: 16px 12px;
+    border: 1px solid #1FA8D7;
+    border-radius: .2rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.upload-file {
+    width: 100%;
+}
+
+.mt-8 {
+    margin-top: 40px;
+}
+
+.form-label-btn {
+    color: #666666;
+    font-weight: 700;
 }

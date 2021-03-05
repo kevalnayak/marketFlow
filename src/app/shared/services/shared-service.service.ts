@@ -10,7 +10,7 @@ export class SharedService {
   constructor(private http: HttpClient) { }
 
   login(data) {
-    return this.http.post(`${environment.url}common/login`, data);
+    return this.http.post(`${environment.url}common/login`, data, { withCredentials: true });
   }
 
   sidebarMenu() {

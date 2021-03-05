@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../shared/loader/loader.service/loader.service';
+import { LanguageService } from '../shared/services/language.service';
 import { SharedService } from '../shared/services/shared-service.service';
 
 @Component({
@@ -12,11 +13,15 @@ import { SharedService } from '../shared/services/shared-service.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  resourceModel:any = {};
   constructor(public fb: FormBuilder, public service: SharedService,
-    public router: Router, public loader: LoaderService, private toaster: ToastrService) { }
+    public router: Router, public loader: LoaderService, private toaster: ToastrService, private languageService: LanguageService) { }
 
   ngOnInit(): void {
-    this.forminit()
+    this.forminit();
+    this.languageService.getLanguage(this.languageService.loginModule).subscribe(res => {
+        this.resourceModel = res;
+    });
   }
 
   forminit() {
