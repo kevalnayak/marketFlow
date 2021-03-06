@@ -13,21 +13,24 @@ import { SharedService } from '../shared/services/shared-service.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  resourceModel:any = {};
+  resourceModel: any = {};
   constructor(public fb: FormBuilder, public service: SharedService,
     public router: Router, public loader: LoaderService, private toaster: ToastrService, private languageService: LanguageService) { }
 
   ngOnInit(): void {
     this.forminit();
     this.languageService.getLanguage(this.languageService.loginModule).subscribe(res => {
-        this.resourceModel = res;
+      this.resourceModel = res;
     });
+    this.service.logout().subscribe(res => {
+      console.log(res, "logout");
+    })
   }
 
   forminit() {
     this.loginForm = this.fb.group({
-      userid: ['', Validators.required],
-      password: ['', Validators.required],
+      userid: ['bbadmin', Validators.required],
+      password: ['bb.ad.min.9', Validators.required],
       appcode: ['ntypeadm']
     })
   }
@@ -40,7 +43,8 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.loader.attach(this.service.login(this.loginForm.value))
         .subscribe(res => {
-          
+          // res.headers.keys().map( (key) => console.log(`${key}: ${res.headers.get(key)}`));
+
           if (res['errcode'] == 0) {
             this.toaster.success("Login successfully");
             this.router.navigate(['/dashboard'])

@@ -3,10 +3,11 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoaderModule } from './shared/loader/loader.module';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { TokenInterceptorInterceptor } from './shared/token-interceptor.interceptor';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,11 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     LoaderModule,
     ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [
+
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorInterceptor, multi: true }
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

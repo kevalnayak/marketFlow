@@ -13,7 +13,11 @@ export class SharedService {
     return this.http.post(`${environment.url}common/login`, data, { withCredentials: true });
   }
 
+  logout() {
+    return this.http.get(`${environment.url}common/logout`);
+  }
+
   sidebarMenu() {
-    return this.http.get(`${environment.url}theme/getthemes/0`, { withCredentials: true })
+    return this.http.get(`${environment.url}theme/getthemes/0`, { observe: 'response', withCredentials: true })
   }
 }
