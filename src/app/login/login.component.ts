@@ -43,9 +43,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.loader.attach(this.service.login(this.loginForm.value))
         .subscribe(res => {
-          // res.headers.keys().map( (key) => console.log(`${key}: ${res.headers.get(key)}`));
-
-          if (res['errcode'] == 0) {
+         if (res['errcode'] == 0) {
             this.toaster.success("Login successfully");
             this.router.navigate(['/dashboard'])
           } else {

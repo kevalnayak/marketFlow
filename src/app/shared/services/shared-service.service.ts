@@ -10,7 +10,7 @@ export class SharedService {
   constructor(private http: HttpClient) { }
 
   login(data) {
-    return this.http.post(`${environment.url}common/login`, data, { withCredentials: true });
+    return this.http.post(`${environment.url}common/login`, data);
   }
 
   logout() {
@@ -18,6 +18,6 @@ export class SharedService {
   }
 
   sidebarMenu() {
-    return this.http.get(`${environment.url}theme/getthemes/0`, { observe: 'response', withCredentials: true })
+    return this.http.get(`${environment.url}theme/getthemes/0`)
   }
 }

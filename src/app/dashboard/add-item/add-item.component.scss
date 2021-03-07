@@ -2,3 +2,64 @@
     background: linear-gradient(rgb(255 255 255 / 72%), rgb(255 255 255 / 55%)), url("../../../assets/imgBack.jpg");
     background-position: center;
 }
+
+select.form-control:not([size]):not([multiple]) {
+    height: auto;
+}
+
+.disableLink {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.downArrow {
+        display: block;
+        width: 100%;
+        padding: 0.25rem 2.1rem 0.25rem 0.7rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.5;
+        background-repeat: no-repeat;
+        background-position: right 0.7rem center;
+        background-size: 16px 12px;
+        border-radius: 0.2rem;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+  
+details[data-popover] > summary:focus {
+    outline: none;
+  }
+  details[data-popover] > summary::-webkit-details-marker {
+    display: none;
+  }
+  details[data-popover] > summary {
+    list-style: none;
+  }
+
+  details[data-popover] > summary {
+    list-style: none;
+    text-decoration: underline dotted teal;
+  }
+
+  details[data-popover] {
+    position: relative;
+  }
+  details[data-popover] > summary + * {
+    position: absolute;
+  }
+
+  details[data-popover="up"] > summary + * {
+    bottom: calc(0.5rem + 100%);
+    right: 105%;
+    transform: translateX(50%);
+  }
+
+  .detail {
+    background-color: #a9a9a9e0;
+    opacity: 3.5;
+    width: 397px;
+  }
