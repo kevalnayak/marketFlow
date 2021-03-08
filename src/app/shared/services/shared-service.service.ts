@@ -17,8 +17,12 @@ export class SharedService {
     return this.http.get(`${environment.url}common/logout`);
   }
 
-  sidebarMenu() {
-    return this.http.get(`${environment.url}theme/getthemes/0`)
+  sidebarMenu(id) {
+    return this.http.get(`${environment.url}theme/getthemes/${id}`)
+  }
+
+  addTheme(data) {
+    return this.http.post(`${environment.url}theme/add`, data)
   }
 
   getOrienation() {

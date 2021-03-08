@@ -7,29 +7,30 @@
                 </a>
 
                 <ul class="sidebar-nav">
-                    <li class="sidebar-item active">
+                    <li class="sidebar-item active" *ngFor="let one of level1; let i = index;">
                         <a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link">
                             <span class="align-middle"><img class="sidemenu_icon mr-4"
-                                    src="../../assets/landscape_white.png"> Portrait (57)</span>
+                                    src="../../assets/landscape_white.png">{{one.name}} ({{one.count}}) </span>
                         </a>
 
-                        <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse show "
-                            data-bs-parent="#sidebar">
+                        <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse show ">
                             <div class="scrollbar" id="style-2">
                                 <div class="force-overflow">
-                                    <li class="sidebar-item active"><a class="sidebar-link" href="#">에티켓 (20) </a></li>
-                                    <li class="sidebar-item"><a class="sidebar-link" href="#">유익정보 (15)
+                                    <li class="sidebar-item" *ngFor="let submenu of one.submenus"><a
+                                            class="sidebar-link" [routerLink]=""
+                                            (click)="loadTab(submenu)">{{submenu.name}} ({{submenu.count}}) </a></li>
+                                    <!-- <li class="sidebar-item"><a class="sidebar-link" href="#">유익정보 (15)
                                         </a></li>
                                     <li class="sidebar-item"><a class="sidebar-link" href="#">재난대비 (22)</a></li>
                                     <li class="sidebar-item"><a class="sidebar-link" href="#">유익정보 (15)
                                         </a></li>
-                                    <li class="sidebar-item"><a class="sidebar-link" href="#">재난대비 (22)</a></li>
+                                    <li class="sidebar-item"><a class="sidebar-link" href="#">재난대비 (22)</a></li> -->
                                 </div>
                             </div>
                         </ul>
                     </li>
 
-                    <li class="sidebar-item">
+                    <!-- <li class="sidebar-item">
                         <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
                             <span class="align-middle"><img class="sidemenu_icon mr-4"
                                     src="../../assets/landscape_white.png"> Landscape (35)</span>
@@ -42,7 +43,7 @@
                             <li class="sidebar-item"><a class="sidebar-link" href="#">Chat </a></li>
                             <li class="sidebar-item"><a class="sidebar-link" href="#">Blank Page</a></li>
                         </ul>
-                    </li>
+                    </li> -->
 
                 </ul>
             </div>
@@ -71,8 +72,8 @@
                                     Hall</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                        data-feather="user"></i> Profile</a>
+                                <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="user"></i>
+                                    Profile</a>
                                 <a class="dropdown-item" href="#"><i class="align-middle me-1"
                                         data-feather="pie-chart"></i> Analytics</a>
                                 <div class="dropdown-divider"></div>
@@ -110,18 +111,19 @@
                             <div class="col-12 col-lg-12">
                                 <div class="tab">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li class="nav-item"><a class="nav-link active" href="#tab-1"
-                                                data-bs-toggle="tab" role="tab">층간소음 (2)</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#tab-2" data-bs-toggle="tab"
+                                        <li class="nav-item" *ngFor="let one of tabs"><a class="nav-link active"
+                                                href="#tab-1" data-bs-toggle="tab" role="tab">{{one.name}}
+                                                ({{one.count}})</a></li>
+                                        <!-- <li class="nav-item"><a class="nav-link" href="#tab-2" data-bs-toggle="tab"
                                                 role="tab">흡연금지 (8)</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#tab-3" data-bs-toggle="tab"
                                                 role="tab">주차질서 (4)</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#tab-4" data-bs-toggle="tab"
-                                                role="tab">반려동물 (6)</a></li>
+                                                role="tab">반려동물 (6)</a></li> -->
                                     </ul>
                                     <div class="tab-content">
                                         <div class="tab-pane active" id="tab-1" role="tabpanel">
-                                            <h4 class="tab-title">Default tabs</h4>
+                                            <!-- <h4 class="tab-title">Default tabs</h4>
                                             <div class="tab-container">
                                                 <img src="../../assets/tab-img.png" alt="Avatar" class="tab-image"
                                                     style="width:100%">
@@ -135,7 +137,7 @@
                                                         <span><strong>DELETE</strong></span>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="tab-pane" id="tab-2" role="tabpanel">
                                             <h4 class="tab-title">Another one</h4>
@@ -191,4 +193,3 @@
         </div>
     </div>
 </div>
-
