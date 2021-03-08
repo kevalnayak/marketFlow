@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoaderService } from '../shared/loader/loader.service/loader.service';
 import { SharedService } from '../shared/services/shared-service.service';
 
@@ -12,7 +12,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild('side') side: ElementRef;
   toggleFlag = false;
   breadcrumbs: any = [];
-  constructor(public service: SharedService, public loader: LoaderService, private route: ActivatedRoute) { }
+  constructor(public service: SharedService, public loader: LoaderService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.getsidebar()
@@ -43,6 +43,10 @@ export class DashboardComponent implements OnInit {
     this.toggleFlag ? this.toggleFlag = false : this.toggleFlag = true;
     let data = this.side.nativeElement;
     this.toggleFlag ? data.classList.add("collapse") : data.classList.remove("collapse");
+  }
+
+  addItemPage() {
+    this.router.navigate(['dashboard/addItem']);
   }
 
 }

@@ -8,7 +8,11 @@ import { SharedModule } from '../shared/shared.module';
 const routes: Routes = [
   {
     path: '',
-    component: DashboardComponent
+    component: DashboardComponent,
+  },
+  {
+    path:'addItem',
+    component: AddItemComponent
   }
 ];
 

@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
       this.loader.attach(this.service.login(this.loginForm.value))
         .subscribe(res => {
          if (res['errcode'] == 0) {
+            localStorage.setItem('loginDetail', JSON.stringify(res))
             this.toaster.success("Login successfully");
             this.router.navigate(['/dashboard'])
           } else {

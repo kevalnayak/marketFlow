@@ -13,42 +13,32 @@
                             <div class="card-body">
                                 <label class="form-label">Orientation</label>
                                 <div class="input-group mb-3">
-                                    <select formControlName="sideDrop1" class="form-select">
-                                        <option>Portrait</option>
-                                        <option>One</option>
-                                        <option>Two</option>
-                                        <option>Three</option>
+                                    <select class="form-select" (change)="changeOrientation(orientationArry[0])" formControlName="sideDrop1">
+                                        <option *ngFor="let item of orientationArry[0]"
+                                         [value]="item.themeid">
+                                            {{item.name}}</option>
                                     </select>
                                 </div>
 
                                 <label class="form-label">Industry Type</label>
                                 <div class="input-group mb-3">
-                                    <select formControlName="sideDrop2" class="form-select">
-                                        <option>Select...</option>
-                                        <option>One</option>
-                                        <option>Two</option>
-                                        <option>Three</option>
+                                    <select formControlName="sideDrop2" (change)="changeIndustryType(industryArry[0])" class="form-select">
+                                        <option *ngFor="let item of industryArry[0]" [value]="item.themeid">
+                                            {{item.name}}</option>
                                     </select>
-                                    <details data-popover="up">
-                                        <summary><img class="drp-dwn" src="../../assets/pluse_dropdown.png"></summary>
-                                        <div class="detail">
-                                            <div class="form-group">
-                                                <label for="inputPassword2" class="sr-only">Item</label>
-                                                <input type="text" class="form-control" style="width: 66%;margin-top: 5px;" id="inputPassword2">
-                                                <button type="button" style="margin-top: 5px;margin-left:100px;" class="btn btn-primary mb-2">Add</button>
-                                              </div>
-                                        </div>
-                                      </details>
+                                    <a (click)="popupType = 'Industry Type'" [ngClass]="(form.sideDrop1.value != '') ? '' : 'disableLink'" data-toggle="modal"
+                                        data-target="#exampleModal"><img class="drp-dwn"
+                                            src="../../assets/pluse_dropdown.png"></a>
                                 </div>
-                                <label class="form-label">Industry Type</label>
+                                <label class="form-label">Category Type</label>
                                 <div class="input-group mb-3">
                                     <select formControlName="sideDrop3" class="form-select">
-                                        <option>Select...</option>
-                                        <option>One</option>
-                                        <option>Two</option>
-                                        <option>Three</option>
+                                        <option *ngFor="let item of categoryArry[0]" [value]="item.themeid">
+                                            {{item.name}}</option>
                                     </select>
-                                    <a><img class="drp-dwn" src="../../assets/pluse_dropdown.png"></a>
+                                    <a (click)="popupType = 'Category Type'" [ngClass]="(form.sideDrop2.value != '') ? '' : 'disableLink'" data-toggle="modal"
+                                        data-target="#exampleModal"><img class="drp-dwn"
+                                            src="../../assets/pluse_dropdown.png"></a>
                                 </div>
                             </div>
                         </li>
@@ -120,38 +110,36 @@
                                         <div>
                                             <label class="form-label-name">Type</label>
                                             <label class="form-check form-check-inline">
-                                                <input class="form-check-input" formControlName="checkType"
-                                                    type="checkbox" value="option1">
+                                                <input #checkPublic class="form-check-input" formControlName="checkType"
+                                                    type="checkbox" value="public" (click)="changeType($event)">
                                                 <span class="form-check-label">
                                                     Public
                                                 </span>
                                             </label>
                                             <label class="form-check form-check-inline">
-                                                <input class="form-check-input" formControlName="checkType"
-                                                    type="checkbox" value="option2">
+                                                <input #checkPrivate class="form-check-input" formControlName="checkType"
+                                                    type="checkbox" value="private" (click)="changeType($event)">
                                                 <span class="form-check-label">
                                                     Private
                                                 </span>
                                             </label>
 
                                         </div>
-
-                                        <label class="form-label-name">Account</label>
-                                        <div class="form-group">
-                                            <select class="form-control downArrow" formControlName="formDrop">
-                                              <option>Select</option>
-                                              <option>One</option>
-                                              <option>Two</option>
-                                              <option>Three</option>
-                                            </select>
-                                          </div>
+                                        <div>
+                                            <label class="form-label-name">Account</label>
+                                            <div class="form-group">
+                                                <select class="form-control downArrow" formControlName="formDrop">
+                                                    <option *ngFor="let item of accountArry[0]" [value]="item.domainid">{{item.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label class="form-label-btn">Preview Image</label>
                                             <label class="select" style="color:#fff;text-transform: uppercase;">
                                                 select <input type="file" (change)="onFileChanged($event)" hidden>
                                             </label>
                                         </div>
-                                       
+
                                         <div class="form-group mt-4">
                                             <label class="form-label-btn">Template bundle</label>
                                             <label class="select" style="color:#fff;text-transform: uppercase;">
@@ -171,10 +159,12 @@
                             <div class="col-12  text-end">
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
-                                        <a class="cancel" style="color:#fff;text-transform: uppercase;" (click)="cancel()">CANCEL</a>
+                                        <a class="cancel" style="color:#fff;text-transform: uppercase;"
+                                            (click)="cancel()">CANCEL</a>
                                     </li>
                                     <li class="list-inline-item">
-                                        <a class="select" style="color:#fff;text-transform: uppercase;" [ngClass]="ItemForm.valid ? '' : 'disableLink'">CREATE</a>
+                                        <a class="select" style="color:#fff;text-transform: uppercase;"
+                                            [ngClass]="ItemForm.valid ? '' : 'disableLink'" (click)="save()">CREATE</a>
                                     </li>
 
                                 </ul>
@@ -185,4 +175,26 @@
             </div>
         </div>
     </form>
+</div>
+
+<div class="modal fade" id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{popupType}}</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" [(ngModel)]="typeString" (keyup)="keyUpVlidation($event)" class="form-control"
+                        id="inputPassword2">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="closePopup()">Close</button>
+                <button type="button" [disabled]="(typeString == '') ? true : false"
+                    class="btn btn-primary" (click)="createCategory()">Save</button>
+            </div>
+        </div>
+    </div>
 </div>
