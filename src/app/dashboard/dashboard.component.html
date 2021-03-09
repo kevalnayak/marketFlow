@@ -7,18 +7,20 @@
                 </a>
 
                 <ul class="sidebar-nav">
-                    <li class="sidebar-item active" *ngFor="let one of level1; let i = index;">
+                    <li class="sidebar-item active">
                         <a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link">
                             <span class="align-middle"><img class="sidemenu_icon mr-4"
-                                    src="../../assets/landscape_white.png">{{one.name}} ({{one.count}}) </span>
+                                    src="../../assets/landscape_white.png">Portrait ({{submenus[0].length}}) </span>
                         </a>
 
                         <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse show ">
                             <div class="scrollbar" id="style-2">
                                 <div class="force-overflow">
-                                    <li class="sidebar-item" *ngFor="let submenu of one.submenus"><a
-                                            class="sidebar-link" [routerLink]=""
-                                            (click)="loadTab(submenu)">{{submenu.name}} ({{submenu.count}}) </a></li>
+                                    <li class="sidebar-item" *ngFor="let one of submenus[0]" [class.active]="current === one.name"><a class="sidebar-link"
+                                            [routerLink]=""
+                                            (click)="getLevels('second',one.themeid);lvl1 = 'Portrait('+submenus[0].length+')';lvl2='';lvl3=''; current=one.name">{{one.name}}
+                                            ({{one.count}}) </a>
+                                    </li>
                                     <!-- <li class="sidebar-item"><a class="sidebar-link" href="#">유익정보 (15)
                                         </a></li>
                                     <li class="sidebar-item"><a class="sidebar-link" href="#">재난대비 (22)</a></li>
@@ -30,20 +32,23 @@
                         </ul>
                     </li>
 
-                    <!-- <li class="sidebar-item">
+                    <li class="sidebar-item active">
                         <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
                             <span class="align-middle"><img class="sidemenu_icon mr-4"
-                                    src="../../assets/landscape_white.png"> Landscape (35)</span>
+                                    src="../../assets/landscape_white.png"> Landscape ({{submenus[1].length}})</span>
                         </a>
                         <ul id="pages" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item"><a class="sidebar-link" href="#">Settings</a></li>
-                            <li class="sidebar-item"><a class="sidebar-link" href="#">Projects </a></li>
+                            <li class="sidebar-item" *ngFor="let one of submenus[1]" [class.active]="current === one.name"><a class="sidebar-link"
+                                    (click)="getLevels('second',one.themeid);lvl1 = 'Landscape('+submenus[1].length+')';lvl2='';lvl3='';current=one.name"
+                                    [routerLink]="">{{one.name}}
+                                    ({{one.count}})</a></li>
+                            <!-- <li class="sidebar-item"><a class="sidebar-link" href="#">Projects </a></li>
                             <li class="sidebar-item"><a class="sidebar-link" href="#">Clients </a></li>
                             <li class="sidebar-item"><a class="sidebar-link" href="#">Pricing </a></li>
                             <li class="sidebar-item"><a class="sidebar-link" href="#">Chat </a></li>
-                            <li class="sidebar-item"><a class="sidebar-link" href="#">Blank Page</a></li>
+                            <li class="sidebar-item"><a class="sidebar-link" href="#">Blank Page</a></li> -->
                         </ul>
-                    </li> -->
+                    </li>
 
                 </ul>
             </div>
@@ -98,11 +103,13 @@
                         <div class="col-auto text-start mt-n1 mb-4 ml-2">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
-                                    <li class="breadcrumb-item"><a href="#">Templates</a></li> >
+                                    <li class="breadcrumb-item" *ngIf="lvl1"><a href="#">Templates</a>></li> 
 
-                                    <li class="breadcrumb-item active" aria-current="page">Portrait (57) </li>
-                                    <li class="breadcrumb-item active" aria-current="page">에티켓 </li>
-                                    <li class="breadcrumb-item active" aria-current="page">층간소음 </li>
+                                    <li class="breadcrumb-item active" aria-current="page">{{lvl1}}<span
+                                            *ngIf="lvl2">></span> </li>
+                                    <li class="breadcrumb-item active" aria-current="page">{{lvl2}}<span
+                                            *ngIf="lvl3">></span> </li>
+                                    <li class="breadcrumb-item active" aria-current="page">{{lvl3}} </li>
                                 </ol>
                             </nav>
                         </div>
@@ -112,7 +119,8 @@
                                 <div class="tab">
                                     <ul class="nav nav-tabs" role="tablist">
                                         <li class="nav-item" *ngFor="let one of tabs"><a class="nav-link active"
-                                                href="#tab-1" data-bs-toggle="tab" role="tab">{{one.name}}
+                                                href="#tab-1" data-bs-toggle="tab" role="tab"
+                                                (click)="getLevels('third',one.themeid);lvl2 = one.name">{{one.name}}
                                                 ({{one.count}})</a></li>
                                         <!-- <li class="nav-item"><a class="nav-link" href="#tab-2" data-bs-toggle="tab"
                                                 role="tab">흡연금지 (8)</a></li>
