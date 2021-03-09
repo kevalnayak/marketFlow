@@ -9,6 +9,7 @@ export class LanguageService {
   
   private Language = 'eng'
   public loginModule = `../../../assets/language/${this.Language}/login.json`
+  public addItemModule = `../../../assets/language/${this.Language}/addItem.json`
   constructor(private http: HttpClient) {
 
   }

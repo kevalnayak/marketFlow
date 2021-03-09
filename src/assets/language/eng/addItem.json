@@ -1,0 +1,12 @@
+{
+    "Orientation": "Orientation",
+    "IndustryType": "Industry Type",
+    "CategoryType": "Category Type",
+    "name": "Name",
+    "type": "Type",
+    "public": "Public",
+    "private": "Private",
+    "account": "Account",
+    "previewImage": "Preview Image",
+    "Templatebundle": "Template bundle"
+}

@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'src/app/shared/loader/loader.service/loader.service';
+import { LanguageService } from 'src/app/shared/services/language.service';
 import { SharedService } from 'src/app/shared/services/shared-service.service';
 
 @Component({
@@ -19,11 +21,16 @@ export class AddItemComponent implements OnInit {
   categoryArry = [];
   localData: void;
   accountArry = [];
+  resourceModel: any = {};
   @ViewChild('checkPublic') checkPublic: ElementRef;
   @ViewChild('checkPrivate') checkPrivate: ElementRef;
-  constructor(public fb: FormBuilder, private sharedService: SharedService) { }
+  @ViewChild('closebutton') closebutton: ElementRef;
+  constructor(public fb: FormBuilder, private sharedService: SharedService, private languageService: LanguageService, public loader: LoaderService) { }
 
   ngOnInit(): void {
+    this.languageService.getLanguage(this.languageService.addItemModule).subscribe(res => {
+      this.resourceModel = res;
+    });
     let data = localStorage.getItem("loginDetail");
     this.localData = JSON.parse(data);
     this.bindDropDown();
@@ -36,15 +43,24 @@ export class AddItemComponent implements OnInit {
   }
 
   bindDropDown() {
-    this.sharedService.getOrienation().subscribe(res => {
-      if (res['errcode'] == 0) {
-        this.orientationArry = [];
-        this.orientationArry.push(res['list']);
-      }
-    });
+    //this.sharedService.getOrienation().subscribe(res => {
+    // if (res['errcode'] == 0) {
+    this.orientationArry = [];
+    let obj = [{
+      themeid: "0",
+      name: "potrait"
+    },
+    {
+      themeid: "1",
+      name: "landscape"
+    }
+    ]
+    this.orientationArry.push(obj);
+    //  }
+    // });
 
     //For sub domain
-    this.sharedService.getSubdomain(this.localData['domainid']).subscribe(res => {
+    this.loader.attach(this.sharedService.getSubdomain(this.localData['domainid'])).subscribe(res => {
       if (res['errcode'] == 0) {
         this.accountArry = [];
         this.accountArry.push(res['domains']);
@@ -53,8 +69,8 @@ export class AddItemComponent implements OnInit {
   }
 
   changeOrientation(item) {
-    let newItem = item.find(x => x.themeid == this.form.sideDrop1.value);
-    this.sharedService.getIndustry(newItem.themeid).subscribe(res => {
+    //let newItem = item.find(x => x.themeid == this.form.sideDrop1.value);
+    this.loader.attach(this.sharedService.getIndustry(Number(this.form.sideDrop1.value))).subscribe(res => {
       if (res['errcode'] == 0) {
         this.industryArry = [];
         this.industryArry.push(res['list']);
@@ -63,8 +79,8 @@ export class AddItemComponent implements OnInit {
   }
 
   changeIndustryType(item) {
-    let newItem = item.find(x => x.themeid == this.form.sideDrop2.value);
-    this.sharedService.getIndustry(newItem.themeid).subscribe(res => {
+    //let newItem = item.find(x => x.themeid == this.form.sideDrop2.value);
+    this.loader.attach(this.sharedService.getIndustry(Number(this.form.sideDrop2.value))).subscribe(res => {
       if (res['errcode'] == 0) {
         this.categoryArry = [];
         this.categoryArry.push(res['list']);
@@ -75,10 +91,12 @@ export class AddItemComponent implements OnInit {
   createCategory() {
     let obj = {
       name: this.typeString,
-      parentid: Number(this.form.sideDrop2.value)
+      parentid: (this.popupType == "Category Type") ? Number(this.form.sideDrop2.value) : -1,
+      editable: Number(this.form.sideDrop1.value)
     }
-    this.sharedService.createCategory(obj).subscribe(res => {
+    this.loader.attach(this.sharedService.createCategory(obj)).subscribe(res => {
       this.typeString = "";
+      this.closebutton.nativeElement.click();
     });
   }
 
@@ -104,12 +122,17 @@ export class AddItemComponent implements OnInit {
   }
 
   onFileChanged(event) {
-    let file = event.target.files[0]
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (res) => {
-      this.Image = reader.result
-    };
+    if (event.target.files[0].type.includes("image")) {
+      let file = event.target.files[0]
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (res) => {
+        this.Image = reader.result
+      };
+    } else if (event.target.files[0].type == "") {
+
+    }
+
   }
 
   cancel() {
@@ -124,13 +147,15 @@ export class AddItemComponent implements OnInit {
   }
 
   save() {
+    var d = new Date()
+    var nd = new Date(d.setMonth(d.getMonth()+3))
     let obj = {
       fName: this.form.name.value,
       fPreviewMediaID: 445483,
       fResourceMediaID: 446167,
       fOutputType: 0,
-      fStartDate: "2021-02-24",
-      fEndDate: "2021-05-24",
+      fStartDate: d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(),
+      fEndDate: nd.getFullYear() + '-' + nd.getMonth() + '-' + nd.getDate(),
       fMovieMediaID: -1,
       fMovieX: 0,
       fMovieY: 0,
@@ -140,22 +165,23 @@ export class AddItemComponent implements OnInit {
       fThemeID: 2,
       fPrivateDomainID: this.form.checkType.value == "public" ? -1 : this.localData['domainid']
     }
-    this.sharedService.create(obj).subscribe(res => {
+    this.loader.attach(this.sharedService.create(obj)).subscribe(res => {
       if (res['errcode'] == 0) {
-        
+
       }
     });
   }
 
   changeType(event) {
     if (event.target.value == "public") {
-       this.checkPrivate.nativeElement.checked = false;
+      this.checkPrivate.nativeElement.checked = false;
     } else {
       this.checkPublic.nativeElement.checked = false;
     }
 
-    if (!this.checkPrivate.nativeElement.checked && !this.checkPublic.nativeElement.checked){
-      this.form.checkType.setValue('');
+    if (!this.checkPrivate.nativeElement.checked && !this.checkPublic.nativeElement.checked) {
+      this.form.checkType.reset();
     }
+    console.log(this.ItemForm.value)
   }
 }

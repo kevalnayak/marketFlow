@@ -11,7 +11,7 @@
                     <ul class="sidebar-nav">
                         <li class="sidebar-item active">
                             <div class="card-body">
-                                <label class="form-label">Orientation</label>
+                                <label class="form-label">{{resourceModel.Orientation}}</label>
                                 <div class="input-group mb-3">
                                     <select class="form-select" (change)="changeOrientation(orientationArry[0])" formControlName="sideDrop1">
                                         <option *ngFor="let item of orientationArry[0]"
@@ -20,7 +20,7 @@
                                     </select>
                                 </div>
 
-                                <label class="form-label">Industry Type</label>
+                                <label class="form-label">{{resourceModel.IndustryType}}</label>
                                 <div class="input-group mb-3">
                                     <select formControlName="sideDrop2" (change)="changeIndustryType(industryArry[0])" class="form-select">
                                         <option *ngFor="let item of industryArry[0]" [value]="item.themeid">
@@ -30,7 +30,7 @@
                                         data-target="#exampleModal"><img class="drp-dwn"
                                             src="../../assets/pluse_dropdown.png"></a>
                                 </div>
-                                <label class="form-label">Category Type</label>
+                                <label class="form-label">{{resourceModel.CategoryType}}</label>
                                 <div class="input-group mb-3">
                                     <select formControlName="sideDrop3" class="form-select">
                                         <option *ngFor="let item of categoryArry[0]" [value]="item.themeid">
@@ -102,31 +102,31 @@
                                 <div class="col-xl-6 col-lg-6 col-xs-12 col-sm-12">
                                     <div class="detail-form p-4">
                                         <div class="mb-3">
-                                            <label class="form-label-name">Name</label>
+                                            <label class="form-label-name">{{resourceModel.name}}</label>
                                             <input type="text" formControlName="name"
                                                 class="form-control form-control-name">
                                         </div>
 
                                         <div>
-                                            <label class="form-label-name">Type</label>
+                                            <label class="form-label-name">{{resourceModel.type}}</label>
                                             <label class="form-check form-check-inline">
                                                 <input #checkPublic class="form-check-input" formControlName="checkType"
                                                     type="checkbox" value="public" (click)="changeType($event)">
                                                 <span class="form-check-label">
-                                                    Public
+                                                    {{resourceModel.public}}
                                                 </span>
                                             </label>
                                             <label class="form-check form-check-inline">
                                                 <input #checkPrivate class="form-check-input" formControlName="checkType"
                                                     type="checkbox" value="private" (click)="changeType($event)">
                                                 <span class="form-check-label">
-                                                    Private
+                                                    {{resourceModel.private}}
                                                 </span>
                                             </label>
 
                                         </div>
                                         <div>
-                                            <label class="form-label-name">Account</label>
+                                            <label class="form-label-name">{{resourceModel.account}}</label>
                                             <div class="form-group">
                                                 <select class="form-control downArrow" formControlName="formDrop">
                                                     <option *ngFor="let item of accountArry[0]" [value]="item.domainid">{{item.name}}</option>
@@ -134,16 +134,16 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="form-label-btn">Preview Image</label>
+                                            <label class="form-label-btn">{{resourceModel.previewImage}}</label>
                                             <label class="select" style="color:#fff;text-transform: uppercase;">
-                                                select <input type="file" (change)="onFileChanged($event)" hidden>
+                                                select <input type="file" accept="image/*" (change)="onFileChanged($event)" hidden>
                                             </label>
                                         </div>
 
                                         <div class="form-group mt-4">
-                                            <label class="form-label-btn">Template bundle</label>
+                                            <label class="form-label-btn">{{resourceModel.Templatebundle}}</label>
                                             <label class="select" style="color:#fff;text-transform: uppercase;">
-                                                select <input type="file" hidden>
+                                                select <input type="file" (change)="onFileChanged($event)" accept=".htr" hidden>
                                             </label>
                                         </div>
                                     </div>
@@ -191,7 +191,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="closePopup()">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" #closebutton (click)="closePopup()">Close</button>
                 <button type="button" [disabled]="(typeString == '') ? true : false"
                     class="btn btn-primary" (click)="createCategory()">Save</button>
             </div>
