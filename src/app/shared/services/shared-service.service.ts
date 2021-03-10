@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SharedService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(data) {
     return this.http.post(`${environment.url}common/login`, data);
@@ -52,5 +52,9 @@ export class SharedService {
       `${environment.url}common/genericupload/?completeUploadClass=adc.dsms.db.acMediaCompleteUpload,adc.dsms.db&uid=${uid}`,
       data
     );
+  }
+
+  deleteTheme(id) {
+    return this.http.get(`${environment.url}theme/delete/${id}`)
   }
 }

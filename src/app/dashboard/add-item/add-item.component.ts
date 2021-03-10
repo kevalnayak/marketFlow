@@ -296,4 +296,13 @@ export class AddItemComponent implements OnInit {
       this.form.privatecheckType.setValue('');
     }
   }
+  delete() {
+    if (this.form.sideDrop3.value != '') {
+      this.sharedService.deleteTheme(this.form.sideDrop3.value).subscribe(res => {
+        if (res['errcode'] == 0) {
+          this.closebutton.nativeElement.click();
+        }
+      })
+    }
+  }
 }
