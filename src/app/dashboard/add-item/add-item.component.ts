@@ -7,7 +7,7 @@ import { SharedService } from 'src/app/shared/services/shared-service.service';
 @Component({
   selector: 'app-add-item',
   templateUrl: './add-item.component.html',
-  styleUrls: ['./add-item.component.scss']
+  styleUrls: ['./add-item.component.scss'],
 })
 export class AddItemComponent implements OnInit {
   @ViewChild('side') side: ElementRef;
@@ -22,20 +22,30 @@ export class AddItemComponent implements OnInit {
   localData: void;
   accountArry = [];
   resourceModel: any = {};
+  uid: any;
+  payloadImg: any;
+  payloadFile: any;
   @ViewChild('checkPublic') checkPublic: ElementRef;
   @ViewChild('checkPrivate') checkPrivate: ElementRef;
   @ViewChild('closebutton') closebutton: ElementRef;
-  constructor(public fb: FormBuilder, private sharedService: SharedService, private languageService: LanguageService, public loader: LoaderService) { }
+  constructor(
+    public fb: FormBuilder,
+    private sharedService: SharedService,
+    private languageService: LanguageService,
+    public loader: LoaderService
+  ) {}
 
   ngOnInit(): void {
-    this.languageService.getLanguage(this.languageService.addItemModule).subscribe(res => {
-      this.resourceModel = res;
-    });
-    let data = localStorage.getItem("loginDetail");
+    this.languageService
+      .getLanguage(this.languageService.addItemModule)
+      .subscribe((res) => {
+        this.resourceModel = res;
+      });
+    let data = localStorage.getItem('loginDetail');
     this.localData = JSON.parse(data);
     this.bindDropDown();
     this.formInit();
-    this.Image = "../../assets/tab-img.png";
+    this.uid = this.localData['uid'];
   }
 
   get form() {
@@ -46,68 +56,82 @@ export class AddItemComponent implements OnInit {
     //this.sharedService.getOrienation().subscribe(res => {
     // if (res['errcode'] == 0) {
     this.orientationArry = [];
-    let obj = [{
-      themeid: "0",
-      name: "potrait"
-    },
-    {
-      themeid: "1",
-      name: "landscape"
-    }
-    ]
+    let obj = [
+      {
+        themeid: '0',
+        name: 'potrait',
+      },
+      {
+        themeid: '1',
+        name: 'landscape',
+      },
+    ];
     this.orientationArry.push(obj);
     //  }
     // });
 
     //For sub domain
-    this.loader.attach(this.sharedService.getSubdomain(this.localData['domainid'])).subscribe(res => {
-      if (res['errcode'] == 0) {
-        this.accountArry = [];
-        this.accountArry.push(res['domains']);
-      }
-    });
+    this.loader
+      .attach(this.sharedService.getSubdomain(this.localData['domainid']))
+      .subscribe((res) => {
+        if (res['errcode'] == 0) {
+          this.accountArry = [];
+          this.accountArry.push(res['domains']);
+        }
+      });
   }
 
   changeOrientation(item) {
     //let newItem = item.find(x => x.themeid == this.form.sideDrop1.value);
-    this.loader.attach(this.sharedService.getIndustry(Number(this.form.sideDrop1.value))).subscribe(res => {
-      if (res['errcode'] == 0) {
-        this.industryArry = [];
-        this.industryArry.push(res['list']);
-      }
-    });
+    this.loader
+      .attach(this.sharedService.getIndustry(Number(this.form.sideDrop1.value)))
+      .subscribe((res) => {
+        if (res['errcode'] == 0) {
+          this.industryArry = [];
+          this.industryArry.push(res['list']);
+        }
+      });
   }
 
   changeIndustryType(item) {
     //let newItem = item.find(x => x.themeid == this.form.sideDrop2.value);
-    this.loader.attach(this.sharedService.getIndustry(Number(this.form.sideDrop2.value))).subscribe(res => {
-      if (res['errcode'] == 0) {
-        this.categoryArry = [];
-        this.categoryArry.push(res['list']);
-      }
-    });
+    this.loader
+      .attach(this.sharedService.getIndustry(Number(this.form.sideDrop2.value)))
+      .subscribe((res) => {
+        if (res['errcode'] == 0) {
+          this.categoryArry = [];
+          this.categoryArry.push(res['list']);
+        }
+      });
   }
 
   createCategory() {
     let obj = {
       name: this.typeString,
-      parentid: (this.popupType == "Category Type") ? Number(this.form.sideDrop2.value) : -1,
-      editable: Number(this.form.sideDrop1.value)
-    }
-    this.loader.attach(this.sharedService.createCategory(obj)).subscribe(res => {
-      this.typeString = "";
-      this.closebutton.nativeElement.click();
-    });
+      parentid:
+        this.popupType == 'Category Type'
+          ? Number(this.form.sideDrop2.value)
+          : -1,
+      editable: Number(this.form.sideDrop1.value),
+    };
+    this.loader
+      .attach(this.sharedService.createCategory(obj))
+      .subscribe((res) => {
+        this.typeString = '';
+        this.closebutton.nativeElement.click();
+      });
   }
 
   closePopup() {
-    this.typeString = "";
+    this.typeString = '';
   }
 
   addToggle() {
-    this.toggleFlag ? this.toggleFlag = false : this.toggleFlag = true;
+    this.toggleFlag ? (this.toggleFlag = false) : (this.toggleFlag = true);
     let data = this.side.nativeElement;
-    this.toggleFlag ? data.classList.add("collapse") : data.classList.remove("collapse");
+    this.toggleFlag
+      ? data.classList.add('collapse')
+      : data.classList.remove('collapse');
   }
 
   formInit() {
@@ -117,38 +141,97 @@ export class AddItemComponent implements OnInit {
       sideDrop3: ['', [Validators.required]],
       name: ['', [Validators.required]],
       checkType: ['', [Validators.required]],
-      formDrop: ['', [Validators.required]]
+      formDrop: ['', [Validators.required]],
+      fPreviewMediaID: ['', [Validators.required]],
+      fResourceMediaID: ['', [Validators.required]],
     });
   }
 
-  onFileChanged(event) {
-    if (event.target.files[0].type.includes("image")) {
-      let file = event.target.files[0]
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (res) => {
-        this.Image = reader.result
+  onFileChanged(files, type) {
+    if (type === 'img') {
+      const reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+      reader.onload = (_event) => {
+        const imageUrlBase64 = reader.result;
+        this.Image = reader.result;
+        const blob = this.b64toBlob(imageUrlBase64.slice(23));
+        const filename = Math.random().toString(20).substr(2, 6) + '.jpg';
+        this.payloadImg = new FormData();
+        this.payloadImg.append('uploadedfile', blob, filename);
+        // this.uploadfileOrImage(this.payloadImg, 'img');
       };
-    } else if (event.target.files[0].type == "") {
+    } else if (type === 'htr') {
+      const fileToUpload = files.item(0);
+      if (files.length === 0) {
+        return;
+      }
+      const extension = fileToUpload.name.split('.').pop().toUpperCase();
+      if (!['HTR'].includes(extension)) {
+        return false;
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+      reader.onload = (_event) => {};
+      this.payloadFile = new FormData();
+      this.payloadFile.append('uploadedfile', fileToUpload);
+    }
+  }
 
+  uploadfileOrImage(payload, type) {
+    this.sharedService.uploadImageAndFile(payload, this.uid).subscribe(
+      (res) => {
+        if (res['errcode'] === 0) {
+          if (type === 'img') {
+            this.ItemForm.controls.fPreviewMediaID.setValue(res['result']);
+          } else {
+            this.ItemForm.controls.fResourceMediaID.setValue(res['result']);
+          }
+        } else {
+          type === 'img'
+            ? this.ItemForm.controls.fPreviewMediaID.setValue('')
+            : this.ItemForm.controls.fResourceMediaID.setValue('');
+        }
+      },
+      (err) => {}
+    );
+  }
+
+  b64toBlob(b64Data, contentType = '', sliceSize = 512) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
     }
 
+    const blob = new Blob(byteArrays, { type: contentType });
+    return blob;
   }
 
   cancel() {
-    this.Image = "../../assets/tab-img.png";
+    this.Image = '../../assets/tab-img.png';
   }
 
   keyUpVlidation(event) {
     let val = event.target.value.trim();
-    if (val == "") {
+    if (val == '') {
       this.typeString = '';
     }
   }
 
-  save() {
-    var d = new Date()
-    var nd = new Date(d.setMonth(d.getMonth()+3))
+  async save() {
+    await this.uploadfileOrImage(this.payloadImg, 'img');
+    await this.uploadfileOrImage(this.payloadFile, 'htr');
+    var d = new Date();
+    var nd = new Date(d.setMonth(d.getMonth() + 3));
     let obj = {
       fName: this.form.name.value,
       fPreviewMediaID: 445483,
@@ -160,28 +243,31 @@ export class AddItemComponent implements OnInit {
       fMovieX: 0,
       fMovieY: 0,
       fRecommend: false,
-      fRefMediaIDs: "",
+      fRefMediaIDs: '',
       fOrder: 2,
       fThemeID: 2,
-      fPrivateDomainID: this.form.checkType.value == "public" ? -1 : this.localData['domainid']
-    }
-    this.loader.attach(this.sharedService.create(obj)).subscribe(res => {
+      fPrivateDomainID:
+        this.form.checkType.value == 'public' ? -1 : this.localData['domainid'],
+    };
+    this.loader.attach(this.sharedService.create(obj)).subscribe((res) => {
       if (res['errcode'] == 0) {
-
       }
     });
   }
 
   changeType(event) {
-    if (event.target.value == "public") {
+    if (event.target.value == 'public') {
       this.checkPrivate.nativeElement.checked = false;
     } else {
       this.checkPublic.nativeElement.checked = false;
     }
 
-    if (!this.checkPrivate.nativeElement.checked && !this.checkPublic.nativeElement.checked) {
+    if (
+      !this.checkPrivate.nativeElement.checked &&
+      !this.checkPublic.nativeElement.checked
+    ) {
       this.form.checkType.reset();
     }
-    console.log(this.ItemForm.value)
+    console.log(this.ItemForm.value);
   }
 }

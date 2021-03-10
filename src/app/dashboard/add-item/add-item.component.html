@@ -1,200 +1,317 @@
 <div data-theme="default" data-layout="fluid" data-sidebar="left">
-    <form [formGroup]="ItemForm">
-        <div class="wrapper">
-            <nav id="sidebar" #side class="sidebar">
-                <div class="sidebar-content js-simplebar">
-                    <a class="sidebar-brand" href="#">
-                        <span class="align-middle">Template Market</span>
-                    </a>
+  <form [formGroup]="ItemForm">
+    <div class="wrapper">
+      <nav id="sidebar" #side class="sidebar">
+        <div class="sidebar-content js-simplebar">
+          <a class="sidebar-brand" href="#">
+            <span class="align-middle">Template Market</span>
+          </a>
 
-
-                    <ul class="sidebar-nav">
-                        <li class="sidebar-item active">
-                            <div class="card-body">
-                                <label class="form-label">{{resourceModel.Orientation}}</label>
-                                <div class="input-group mb-3">
-                                    <select class="form-select" (change)="changeOrientation(orientationArry[0])" formControlName="sideDrop1">
-                                        <option *ngFor="let item of orientationArry[0]"
-                                         [value]="item.themeid">
-                                            {{item.name}}</option>
-                                    </select>
-                                </div>
-
-                                <label class="form-label">{{resourceModel.IndustryType}}</label>
-                                <div class="input-group mb-3">
-                                    <select formControlName="sideDrop2" (change)="changeIndustryType(industryArry[0])" class="form-select">
-                                        <option *ngFor="let item of industryArry[0]" [value]="item.themeid">
-                                            {{item.name}}</option>
-                                    </select>
-                                    <a (click)="popupType = 'Industry Type'" [ngClass]="(form.sideDrop1.value != '') ? '' : 'disableLink'" data-toggle="modal"
-                                        data-target="#exampleModal"><img class="drp-dwn"
-                                            src="../../assets/pluse_dropdown.png"></a>
-                                </div>
-                                <label class="form-label">{{resourceModel.CategoryType}}</label>
-                                <div class="input-group mb-3">
-                                    <select formControlName="sideDrop3" class="form-select">
-                                        <option *ngFor="let item of categoryArry[0]" [value]="item.themeid">
-                                            {{item.name}}</option>
-                                    </select>
-                                    <a (click)="popupType = 'Category Type'" [ngClass]="(form.sideDrop2.value != '') ? '' : 'disableLink'" data-toggle="modal"
-                                        data-target="#exampleModal"><img class="drp-dwn"
-                                            src="../../assets/pluse_dropdown.png"></a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item active">
+              <div class="card-body">
+                <label class="form-label">{{
+                  resourceModel.Orientation
+                }}</label>
+                <div class="input-group mb-3">
+                  <select
+                    class="form-select"
+                    (change)="changeOrientation(orientationArry[0])"
+                    formControlName="sideDrop1"
+                  >
+                    <option
+                      *ngFor="let item of orientationArry[0]"
+                      [value]="item.themeid"
+                    >
+                      {{ item.name }}
+                    </option>
+                  </select>
                 </div>
-            </nav>
 
-            <div class="main">
-                <nav class="navbar navbar-expand navbar-light navbar-bg">
-                    <a class="sidebar-toggle d-flex" (click)="addToggle()">
-                        <i class="hamburger align-self-center"></i>
-                    </a>
-                    <h3>Template</h3>
-
-                    <div class="navbar-collapse collapse">
-                        <ul class="navbar-nav navbar-align">
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
-                                    data-bs-toggle="dropdown">
-                                    <i class="align-middle" data-feather="settings"></i>
-                                </a>
-
-                                <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
-                                    data-bs-toggle="dropdown">
-                                    <img src="../../assets/avatar.jpg" class="avatar img-fluid rounded me-1"
-                                        alt="Charles Hall" /> <span class="text-dark">Charles
-                                        Hall</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                            data-feather="user"></i>
-                                        Profile</a>
-                                    <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                            data-feather="pie-chart"></i> Analytics</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                            data-feather="settings"></i> Settings &
-                                        Privacy</a>
-                                    <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                            data-feather="help-circle"></i> Help Center</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Log out</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-
-                <main class="content pt-0">
-                    <div class="container-fluid p-0">
-
-                        <div class="row mb-2 mb-xl-3">
-                            <div class="row" style="background-color: #fff;">
-                                <div class="col-xl-6 col-lg-6 col-xs-12 col-sm-12 backImg">
-                                    <div class="img-privew mx-auto">
-                                        <img class="mt-4" height="400px" width="223px" [src]="Image" style="z-index: 2;"
-                                            alt="Avatar">
-                                    </div>
-                                </div>
-                                <div class="col-xl-6 col-lg-6 col-xs-12 col-sm-12">
-                                    <div class="detail-form p-4">
-                                        <div class="mb-3">
-                                            <label class="form-label-name">{{resourceModel.name}}</label>
-                                            <input type="text" formControlName="name"
-                                                class="form-control form-control-name">
-                                        </div>
-
-                                        <div>
-                                            <label class="form-label-name">{{resourceModel.type}}</label>
-                                            <label class="form-check form-check-inline">
-                                                <input #checkPublic class="form-check-input" formControlName="checkType"
-                                                    type="checkbox" value="public" (click)="changeType($event)">
-                                                <span class="form-check-label">
-                                                    {{resourceModel.public}}
-                                                </span>
-                                            </label>
-                                            <label class="form-check form-check-inline">
-                                                <input #checkPrivate class="form-check-input" formControlName="checkType"
-                                                    type="checkbox" value="private" (click)="changeType($event)">
-                                                <span class="form-check-label">
-                                                    {{resourceModel.private}}
-                                                </span>
-                                            </label>
-
-                                        </div>
-                                        <div>
-                                            <label class="form-label-name">{{resourceModel.account}}</label>
-                                            <div class="form-group">
-                                                <select class="form-control downArrow" formControlName="formDrop">
-                                                    <option *ngFor="let item of accountArry[0]" [value]="item.domainid">{{item.name}}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label-btn">{{resourceModel.previewImage}}</label>
-                                            <label class="select" style="color:#fff;text-transform: uppercase;">
-                                                select <input type="file" accept="image/*" (change)="onFileChanged($event)" hidden>
-                                            </label>
-                                        </div>
-
-                                        <div class="form-group mt-4">
-                                            <label class="form-label-btn">{{resourceModel.Templatebundle}}</label>
-                                            <label class="select" style="color:#fff;text-transform: uppercase;">
-                                                select <input type="file" (change)="onFileChanged($event)" accept=".htr" hidden>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </main>
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row text-muted">
-                            <div class="col-12  text-end">
-                                <ul class="list-inline">
-                                    <li class="list-inline-item">
-                                        <a class="cancel" style="color:#fff;text-transform: uppercase;"
-                                            (click)="cancel()">CANCEL</a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a class="select" style="color:#fff;text-transform: uppercase;"
-                                            [ngClass]="ItemForm.valid ? '' : 'disableLink'" (click)="save()">CREATE</a>
-                                    </li>
-
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
+                <label class="form-label">{{
+                  resourceModel.IndustryType
+                }}</label>
+                <div class="input-group mb-3">
+                  <select
+                    formControlName="sideDrop2"
+                    (change)="changeIndustryType(industryArry[0])"
+                    class="form-select"
+                  >
+                    <option
+                      *ngFor="let item of industryArry[0]"
+                      [value]="item.themeid"
+                    >
+                      {{ item.name }}
+                    </option>
+                  </select>
+                  <a
+                    (click)="popupType = 'Industry Type'"
+                    [ngClass]="form.sideDrop1.value != '' ? '' : 'disableLink'"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    ><img class="drp-dwn" src="../../assets/pluse_dropdown.png"
+                  /></a>
+                </div>
+                <label class="form-label">{{
+                  resourceModel.CategoryType
+                }}</label>
+                <div class="input-group mb-3">
+                  <select formControlName="sideDrop3" class="form-select">
+                    <option
+                      *ngFor="let item of categoryArry[0]"
+                      [value]="item.themeid"
+                    >
+                      {{ item.name }}
+                    </option>
+                  </select>
+                  <a
+                    (click)="popupType = 'Category Type'"
+                    [ngClass]="form.sideDrop2.value != '' ? '' : 'disableLink'"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    ><img class="drp-dwn" src="../../assets/pluse_dropdown.png"
+                  /></a>
+                </div>
+              </div>
+            </li>
+          </ul>
         </div>
-    </form>
+      </nav>
+
+      <div class="main">
+        <nav class="navbar navbar-expand navbar-light navbar-bg">
+          <a class="sidebar-toggle d-flex" (click)="addToggle()">
+            <i class="hamburger align-self-center"></i>
+          </a>
+          <h3>Template</h3>
+
+          <div class="navbar-collapse collapse">
+            <ul class="navbar-nav navbar-align">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-icon dropdown-toggle d-inline-block d-sm-none"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="align-middle" data-feather="settings"></i>
+                </a>
+
+                <a
+                  class="nav-link dropdown-toggle d-none d-sm-inline-block"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <img
+                    src="../../assets/avatar.jpg"
+                    class="avatar img-fluid rounded me-1"
+                    alt="Charles Hall"
+                  />
+                  <span class="text-dark">Charles Hall</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a class="dropdown-item" href="#">Log out</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main class="content pt-0">
+          <div class="container-fluid p-0">
+            <div class="row mb-2 mb-xl-3">
+              <div class="row" style="background-color: #fff">
+                <div class="col-xl-6 col-lg-6 col-xs-12 col-sm-12 backImg">
+                  <div class="img-privew mx-auto">
+                    <img
+                      *ngIf="!!Image"
+                      class="mt-4"
+                      height="400px"
+                      width="223px"
+                      [src]="Image"
+                      style="z-index: 2"
+                      alt="Avatar"
+                    />
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-xs-12 col-sm-12">
+                  <div class="detail-form p-4">
+                    <div class="mb-3">
+                      <label class="form-label-name">{{
+                        resourceModel.name
+                      }}</label>
+                      <input
+                        type="text"
+                        formControlName="name"
+                        class="form-control form-control-name"
+                      />
+                    </div>
+
+                    <div>
+                      <label class="form-label-name">{{
+                        resourceModel.type
+                      }}</label>
+                      <label class="form-check form-check-inline">
+                        <input
+                          #checkPublic
+                          class="form-check-input"
+                          formControlName="checkType"
+                          type="checkbox"
+                          value="public"
+                          (click)="changeType($event)"
+                        />
+                        <span class="form-check-label">
+                          {{ resourceModel.public }}
+                        </span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input
+                          #checkPrivate
+                          class="form-check-input"
+                          formControlName="checkType"
+                          type="checkbox"
+                          value="private"
+                          (click)="changeType($event)"
+                        />
+                        <span class="form-check-label">
+                          {{ resourceModel.private }}
+                        </span>
+                      </label>
+                    </div>
+                    <div>
+                      <label class="form-label-name">{{
+                        resourceModel.account
+                      }}</label>
+                      <div class="form-group">
+                        <select
+                          class="form-control downArrow"
+                          formControlName="formDrop"
+                        >
+                          <option
+                            *ngFor="let item of accountArry[0]"
+                            [value]="item.domainid"
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label-btn">{{
+                        resourceModel.previewImage
+                      }}</label>
+                      <label
+                        class="select"
+                        style="color: #fff; text-transform: uppercase"
+                      >
+                        select
+                        <input
+                          type="file"
+                          accept="image/*"
+                          (change)="onFileChanged($event.target.files, 'img')"
+                          hidden
+                        />
+                      </label>
+                    </div>
+
+                    <div class="form-group mt-4">
+                      <label class="form-label-btn">{{
+                        resourceModel.Templatebundle
+                      }}</label>
+                      <label
+                        class="select"
+                        style="color: #fff; text-transform: uppercase"
+                      >
+                        select
+                        <input
+                          type="file"
+                          (change)="onFileChanged($event.target.files, 'htr')"
+                          accept=".htr"
+                          hidden
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <footer class="footer">
+          <div class="container-fluid">
+            <div class="row text-muted">
+              <div class="col-12 text-end">
+                <ul class="list-inline">
+                  <li class="list-inline-item">
+                    <a
+                      class="cancel"
+                      style="color: #fff; text-transform: uppercase"
+                      (click)="cancel()"
+                      >CANCEL</a
+                    >
+                  </li>
+                  <li class="list-inline-item">
+                    <a
+                      class="select"
+                      style="color: #fff; text-transform: uppercase"
+                      [ngClass]="ItemForm.valid ? '' : 'disableLink'"
+                      (click)="save()"
+                      >CREATE</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </form>
 </div>
 
-<div class="modal fade" id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{popupType}}</h5>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <input type="text" [(ngModel)]="typeString" (keyup)="keyUpVlidation($event)" class="form-control"
-                        id="inputPassword2">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal" #closebutton (click)="closePopup()">Close</button>
-                <button type="button" [disabled]="(typeString == '') ? true : false"
-                    class="btn btn-primary" (click)="createCategory()">Save</button>
-            </div>
+<div
+  class="modal fade"
+  id="exampleModal"
+  data-backdrop="static"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ popupType }}</h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input
+            type="text"
+            [(ngModel)]="typeString"
+            (keyup)="keyUpVlidation($event)"
+            class="form-control"
+            id="inputPassword2"
+          />
         </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+          #closebutton
+          (click)="closePopup()"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          [disabled]="typeString == '' ? true : false"
+          class="btn btn-primary"
+          (click)="createCategory()"
+        >
+          Save
+        </button>
+      </div>
     </div>
+  </div>
 </div>
