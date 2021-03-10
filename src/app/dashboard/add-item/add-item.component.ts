@@ -28,12 +28,15 @@ export class AddItemComponent implements OnInit {
   @ViewChild('checkPublic') checkPublic: ElementRef;
   @ViewChild('checkPrivate') checkPrivate: ElementRef;
   @ViewChild('closebutton') closebutton: ElementRef;
+  @ViewChild('account') account: ElementRef;
+  
+  checkedFlag = true;
   constructor(
     public fb: FormBuilder,
     private sharedService: SharedService,
     private languageService: LanguageService,
     public loader: LoaderService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.languageService
@@ -46,6 +49,13 @@ export class AddItemComponent implements OnInit {
     this.bindDropDown();
     this.formInit();
     this.uid = this.localData['uid'];
+  }
+
+  ngAfterViewInit() {
+    this.checkPublic.nativeElement.checked = true;
+    this.form.publiccheckType.setValue('public');
+    this.account.nativeElement.disabled = true;
+    this.checkedFlag = false;
   }
 
   get form() {
@@ -136,14 +146,16 @@ export class AddItemComponent implements OnInit {
 
   formInit() {
     this.ItemForm = this.fb.group({
-      sideDrop1: ['', [Validators.required]],
-      sideDrop2: ['', [Validators.required]],
-      sideDrop3: ['', [Validators.required]],
+      sideDrop1: [''],
+      sideDrop2: [''],
+      sideDrop3: [''],
       name: ['', [Validators.required]],
-      checkType: ['', [Validators.required]],
-      formDrop: ['', [Validators.required]],
-      fPreviewMediaID: ['', [Validators.required]],
-      fResourceMediaID: ['', [Validators.required]],
+      checkType: [''],
+      formDrop: [''],
+      fPreviewMediaID: [''],
+      fResourceMediaID: [''],
+      privatecheckType: [''],
+      publiccheckType: ['']
     });
   }
 
@@ -171,14 +183,14 @@ export class AddItemComponent implements OnInit {
       }
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
-      reader.onload = (_event) => {};
+      reader.onload = (_event) => { };
       this.payloadFile = new FormData();
       this.payloadFile.append('uploadedfile', fileToUpload);
     }
   }
 
-  uploadfileOrImage(payload, type) {
-    this.sharedService.uploadImageAndFile(payload, this.uid).subscribe(
+ async uploadfileOrImage(payload, type) {
+   await this.sharedService.uploadImageAndFile(payload, this.uid).toPromise().then(
       (res) => {
         if (res['errcode'] === 0) {
           if (type === 'img') {
@@ -192,12 +204,12 @@ export class AddItemComponent implements OnInit {
             : this.ItemForm.controls.fResourceMediaID.setValue('');
         }
       },
-      (err) => {}
+      (err) => { }
     );
   }
 
   b64toBlob(b64Data, contentType = '', sliceSize = 512) {
-    const byteCharacters = atob(b64Data);
+    const byteCharacters = b64Data;//atob(b64Data);
     const byteArrays = [];
 
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
@@ -228,17 +240,19 @@ export class AddItemComponent implements OnInit {
   }
 
   async save() {
+    console.log(this.payloadImg, 'imagg');
+    console.log(this.payloadFile, 'htrrr');
     await this.uploadfileOrImage(this.payloadImg, 'img');
     await this.uploadfileOrImage(this.payloadFile, 'htr');
     var d = new Date();
-    var nd = new Date(d.setMonth(d.getMonth() + 3));
+    var nd = new Date(new Date().setMonth(d.getMonth() + 3));
     let obj = {
       fName: this.form.name.value,
-      fPreviewMediaID: 445483,
-      fResourceMediaID: 446167,
+      fPreviewMediaID: this.form.fPreviewMediaID.value,
+      fResourceMediaID: this.form.fResourceMediaID.value,
       fOutputType: 0,
-      fStartDate: d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(),
-      fEndDate: nd.getFullYear() + '-' + nd.getMonth() + '-' + nd.getDate(),
+      fStartDate: d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate(),
+      fEndDate: nd.getFullYear() + '-' + (nd.getMonth()+1) + '-' + nd.getDate(),
       fMovieMediaID: -1,
       fMovieX: 0,
       fMovieY: 0,
@@ -246,8 +260,7 @@ export class AddItemComponent implements OnInit {
       fRefMediaIDs: '',
       fOrder: 2,
       fThemeID: 2,
-      fPrivateDomainID:
-        this.form.checkType.value == 'public' ? -1 : this.localData['domainid'],
+      fPrivateDomainID: this.checkPublic.nativeElement.checked ? -1 : this.localData['domainid'],
     };
     this.loader.attach(this.sharedService.create(obj)).subscribe((res) => {
       if (res['errcode'] == 0) {
@@ -257,17 +270,30 @@ export class AddItemComponent implements OnInit {
 
   changeType(event) {
     if (event.target.value == 'public') {
+      this.checkedFlag = false;
+      this.form.formDrop.setValue(null);
+      this.form.formDrop.setValidators(null);
+      this.form.formDrop.updateValueAndValidity();
+      this.account.nativeElement.disabled = true;
+      this.checkPublic.nativeElement.checked = true;
       this.checkPrivate.nativeElement.checked = false;
+      this.form.publiccheckType.setValue('public');
     } else {
+      this.checkedFlag = false;
+      this.account.nativeElement.disabled = false;
+      this.form.formDrop.setValidators(Validators.required);
+      this.form.formDrop.updateValueAndValidity();
+      this.checkPrivate.nativeElement.checked = true;
       this.checkPublic.nativeElement.checked = false;
+      this.form.privatecheckType.setValue('private');
     }
 
     if (
       !this.checkPrivate.nativeElement.checked &&
       !this.checkPublic.nativeElement.checked
     ) {
-      this.form.checkType.reset();
+      this.form.publiccheckType.setValue('');
+      this.form.privatecheckType.setValue('');
     }
-    console.log(this.ItemForm.value);
   }
 }
