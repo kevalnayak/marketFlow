@@ -40,7 +40,7 @@
 
 body {
 	margin: 0;
-	font-family: var(--bs-font-sans-serif);
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: .875rem;
 	font-weight: 400;
 	line-height: 1.5;
@@ -217,7 +217,7 @@ code,
 kbd,
 pre,
 samp {
-	font-family: var(--bs-font-monospace);
+	//font-family: var(--bs-font-monospace);
 	font-size: 1em;
 	direction: ltr;
 	unicode-bidi: bidi-override
@@ -315,7 +315,7 @@ optgroup,
 select,
 textarea {
 	margin: 0;
-	font-family: inherit;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: inherit;
 	line-height: inherit
 }
@@ -5910,7 +5910,7 @@ fieldset:disabled .btn {
 	z-index: 1070;
 	display: block;
 	margin: 0;
-	font-family: var(--bs-font-sans-serif);
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	line-height: 1.5;
@@ -6035,7 +6035,7 @@ fieldset:disabled .btn {
 	z-index: 1060;
 	display: block;
 	max-width: 276px;
-	font-family: var(--bs-font-sans-serif);
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	line-height: 1.5;
@@ -8151,7 +8151,7 @@ fieldset:disabled .btn {
 }
 
 .font-monospace {
-	font-family: var(--bs-font-monospace)!important
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important
 }
 
 .user-select-all {
@@ -20990,7 +20990,7 @@ body[data-layout=boxed] .wrapper {
 }
 
 .apexcharts-text tspan {
-	font-family: inherit
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
 .legend-mouseover-inactive {
@@ -21036,7 +21036,7 @@ body[data-layout=boxed] .wrapper {
 }
 
 .apexcharts-tooltip * {
-	font-family: inherit
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
 .apexcharts-tooltip-title {
@@ -22433,7 +22433,7 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>th.dtr-control:before {
 	box-sizing: initial;
 	text-align: center;
 	text-indent: 0!important;
-	font-family: Courier New, Courier, monospace;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	line-height: 1em;
 	content: "+";
 	background-color: #0275d8
@@ -22487,7 +22487,7 @@ table.dataTable.dtr-column>tbody>tr>th.dtr-control:before {
 	box-sizing: initial;
 	text-align: center;
 	text-indent: 0!important;
-	font-family: Courier New, Courier, monospace;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	line-height: 1em;
 	content: "+";
 	background-color: #0275d8
@@ -22968,7 +22968,7 @@ table.dataTable.dtr-inline.collapsed.table-sm>tbody>tr>th:first-child:before {
 }
 
 .flatpickr-current-month span.cur-month {
-	font-family: inherit;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-weight: 700;
 	color: inherit;
 	display: inline-block;
@@ -23003,7 +23003,7 @@ table.dataTable.dtr-inline.collapsed.table-sm>tbody>tr>th:first-child:before {
 	margin: 0;
 	display: inline-block;
 	font-size: inherit;
-	font-family: inherit;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-weight: 300;
 	line-height: inherit;
 	height: auto;
@@ -23036,7 +23036,7 @@ table.dataTable.dtr-inline.collapsed.table-sm>tbody>tr>th:first-child:before {
 	color: inherit;
 	cursor: pointer;
 	font-size: inherit;
-	font-family: inherit;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-weight: 300;
 	height: auto;
 	line-height: inherit;
@@ -24806,7 +24806,7 @@ text {
 
 .jvm-tooltip {
 	background-color: #5c5cff;
-	font-family: sans-serif, Verdana;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: smaller;
 	box-shadow: 1px 2px 12px rgba(0, 0, 0, .2);
 	padding: 3px 5px;
@@ -25407,11 +25407,11 @@ text {
 }
 
 .ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=serif]:before {
-	font-family: Georgia, Times New Roman, serif
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
 .ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=monospace]:before {
-	font-family: Monaco, Courier New, monospace
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
 .ql-bubble .ql-picker.ql-size {
@@ -25592,7 +25592,7 @@ text {
 
 .ql-container {
 	box-sizing: border-box;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 13px;
 	height: 100%;
 	margin: 0;
@@ -26053,11 +26053,11 @@ text {
 }
 
 .ql-editor .ql-font-serif {
-	font-family: Georgia, Times New Roman, serif
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
 .ql-editor .ql-font-monospace {
-	font-family: Monaco, Courier New, monospace
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
 .ql-editor .ql-size-small {
@@ -26590,11 +26590,11 @@ text {
 }
 
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=serif]:before {
-	font-family: Georgia, Times New Roman, serif
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=monospace]:before {
-	font-family: Monaco, Courier New, monospace
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
 .ql-snow .ql-picker.ql-size {
@@ -27515,7 +27515,7 @@ text {
 
 .ql-container,
 .ql-toolbar.ql-snow {
-	font-family: var(--bs-font-sans-serif)
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
 .ql-container {

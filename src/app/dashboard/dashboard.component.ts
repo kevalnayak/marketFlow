@@ -29,13 +29,13 @@ export class DashboardComponent implements OnInit {
     this.loader.attach(this.service.sidebarMenu(id))
       .subscribe((res: any) => {
 
-        if (res.errcode == 0) {
+        if (res.errcode === 0) {
           res = res.list.sort((a, b) => { return b.order - a.order })
           switch (flag) {
             case 'first':
               this.submenus = res
                 .reduce((result, element) => {
-                  result[element.editable == 0 ? 0 : 1].push(element);
+                  result[element.editable === 0 ? 0 : 1].push(element);
                   return result;
                 }, [[], []]);
               break;
