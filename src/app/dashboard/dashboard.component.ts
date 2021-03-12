@@ -1,5 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../shared/loader/loader.service/loader.service';
 import { SharedService } from '../shared/services/shared-service.service';
 
@@ -12,12 +14,15 @@ export class DashboardComponent implements OnInit {
   @ViewChild('side') side: ElementRef;
   toggleFlag = false;
   breadcrumbs: any = [];
+  modalRef: any;
   constructor(
     public shareService: SharedService,
     public loader: LoaderService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private toaster: ToastrService,
+    private modalService: BsModalService
+  ) { }
   submenus = [[], []];
   templateList = [];
   tabs = [];
@@ -28,10 +33,20 @@ export class DashboardComponent implements OnInit {
   downloadUrl: string;
   tabContentIndex = false;
   userName: string;
-  ngOnInit(): void {
+  @ViewChild('closebutton') closebutton: ElementRef;
+  deleteid: any
+  async ngOnInit(): Promise<void> {
     this.userName = localStorage.getItem('userName');
     this.downloadUrl = 'https://' + localStorage.getItem('downloadurl') + '/';
-    this.getLevels('first', -1);
+    let lvl1 = await localStorage.getItem('lvl1');
+    let lvl2 = await JSON.parse(localStorage.getItem('lvl2'));
+    let lvl3 = await JSON.parse(localStorage.getItem('lvl3'));
+    if (lvl1) {
+      this.lvl1 = lvl1
+    }
+    if (lvl2) { this.lvl2 = lvl2['name'], this.current = lvl2['name'], this.getLevels('second', { themeid: lvl2.themeid },'initTime') }
+    if (lvl3) { this.lvl3 = lvl3.data['name'], this.getTemplates(lvl3.data.themeid, lvl3.index,'initTime') }
+    this.getLevels('first', { themeid: -1 });
     this.getPolicy();
   }
 
@@ -43,13 +58,14 @@ export class DashboardComponent implements OnInit {
           localStorage.setItem('uploadurl', res['uploadurl']);
         }
       },
-      (err) => {}
+      (err) => { }
     );
   }
 
-  getLevels(flag, id) {
+  getLevels(flag, data, isinit?) {
+    (this.lvl1) ? localStorage.setItem('lvl1', this.lvl1) : ''
     this.loader
-      .attach(this.shareService.sidebarMenu(id))
+      .attach(this.shareService.sidebarMenu(data.themeid))
       .subscribe((res: any) => {
         if (res.errcode === 0) {
           res = res.list.sort((a, b) => {
@@ -66,6 +82,8 @@ export class DashboardComponent implements OnInit {
               );
               break;
             case 'second':
+              (!isinit) ? localStorage.setItem('lvl2', JSON.stringify(data)) : ''
+              this.templateList = []
               this.tabs = res;
             case 'third':
             //  this.getTemplates(id);
@@ -111,7 +129,8 @@ export class DashboardComponent implements OnInit {
   //   })
   // }
 
-  getTemplates(id, i) {
+  getTemplates(id, i,init?) {
+    (!init) ? localStorage.setItem('lvl3', JSON.stringify({ data: this.tabs[i], 'index': i })) : ''
     this.shareService.getTemplates(id).subscribe(
       (res) => {
         if (res['errcode'] === 0) {
@@ -119,7 +138,7 @@ export class DashboardComponent implements OnInit {
           this.setTabContent(i);
         }
       },
-      (err) => {}
+      (err) => { }
     );
   }
 
@@ -131,5 +150,18 @@ export class DashboardComponent implements OnInit {
     this.router.navigateByUrl('/dashboard/addItem', {
       state: data,
     });
+  }
+  deleteTemplate() {
+    this.shareService.deleteTemplate(this.deleteid).subscribe((res) => {
+      if (res['errcode'] == 0) {
+        this.toaster.show('Template succfully Deleted');
+        this.closebutton.nativeElement.click();
+      }
+    })
+  }
+  openDeleteModal(template: TemplateRef<any>, data) {
+    this.modalRef = this.modalService.show(template);
+    console.log(data);
+    this.deleteid = data.fID
   }
 }
