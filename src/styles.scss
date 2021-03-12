@@ -489,10 +489,7 @@ progress {
 .list-inline,
 .list-inline, .list-unstyled {
     padding-left: 0;
-    list-style: none;
-    
-    
-
+    list-style: none;   
 }
 
 .list-inline-item {
@@ -12203,8 +12200,8 @@ fieldset:disabled .btn {
 }
 
 .avatar {
-	width: 40px;
-	height: 40px
+	width: 20px;
+	height: 20px
 }
 
 .avatar-title {
@@ -13978,7 +13975,7 @@ body[data-theme=light] .sidebar-dropdown .sidebar-link {
 }
 
 .sidebar-dropdown .sidebar-link:before {
-	content: "→";
+	// content: "→";
 	display: inline-block;
 	position: relative;
 	left: -14px;
@@ -14343,7 +14340,7 @@ body[data-theme=light] .sidebar-cta-content {
     width: 100%;
 }
 .tab .nav-tabs .nav-link {
-	background: transparent;
+	//background: transparent;
 	color: #343a40;
 	padding: .75rem 1rem;
 	border: 1px solid #999999;

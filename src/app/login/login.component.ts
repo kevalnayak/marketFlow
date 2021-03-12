@@ -52,6 +52,10 @@ export class LoginComponent implements OnInit {
       this.loader.attach(this.service.login(this.loginForm.value)).subscribe(
         (res) => {
           if (res['errcode'] == 0) {
+            localStorage.setItem(
+              'userName',
+              this.loginForm.controls.userid.value
+            );
             localStorage.setItem('domainid', res['domainid']);
             localStorage.setItem('uid', res['uid']);
             this.toaster.success('Login successfully');

@@ -27,6 +27,7 @@ import { SharedService } from 'src/app/shared/services/shared-service.service';
 export class AddItemComponent implements OnInit {
   @ViewChild('side') side: ElementRef;
   toggleFlag = false;
+  userName: string;
   ItemForm: FormGroup;
   Image: any;
   popupType = '';
@@ -81,6 +82,7 @@ export class AddItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userName = localStorage.getItem('userName');
     this.languageService
       .getLanguage(this.languageService.addItemModule)
       .subscribe((res) => {
@@ -376,6 +378,8 @@ export class AddItemComponent implements OnInit {
   }
 
   cancel() {
+    this.isUploadFileChange = false;
+    this.isUploadImageChange = false;
     this.payloadImg = '';
     this.payloadFile = '';
     this.orientation.nativeElement.value = '';
@@ -384,6 +388,11 @@ export class AddItemComponent implements OnInit {
     this.imageFile.nativeElement.value = '';
     this.account.nativeElement.value = '';
     this.file.nativeElement.value = '';
+    this.accountDrp.setValue('');
+    this.orientationDrp.setValue('');
+    this.categoryDrp.setValue('');
+    this.imageFileControl.setValue('');
+    this.fileControl.setValue('');
     this.router.navigate(['/dashboard']);
   }
 

@@ -16,7 +16,7 @@
               <span class="align-middle"
                 ><img
                   class="sidemenu_icon mr-4"
-                  src="../../assets/landscape_white.png"
+                  src="../../assets/portrait_white.png"
                 />Portrait ({{ submenus[0].length }})
               </span>
             </a>
@@ -109,7 +109,7 @@
         <a class="sidebar-toggle d-flex" (click)="addToggle()">
           <i class="hamburger align-self-center"></i>
         </a>
-        <h3>Template</h3>
+        <h3 class="titleColor">Templates</h3>
 
         <div class="navbar-collapse collapse">
           <ul class="navbar-nav navbar-align">
@@ -128,11 +128,11 @@
                 data-bs-toggle="dropdown"
               >
                 <img
-                  src="../../assets/avatar.jpg"
-                  class="avatar img-fluid rounded me-1"
-                  alt="Charles Hall"
+                  src="assets/icons/account_icon.png"
+                  class="avatar img-fluid me-1"
+                  alt="user"
                 />
-                <span class="text-dark">Charles Hall</span>
+                <span class="text-dark">{{ userName }}</span>
               </a>
               <div class="dropdown-menu dropdown-menu-end">
                 <a class="dropdown-item" href="#">Log out</a>
@@ -148,12 +148,12 @@
             <div class="col-auto text-start mt-n1 mb-4 ml-2">
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
-                  <li class="breadcrumb-item" *ngIf="lvl1">
-                    <a href="#">Templates</a>>
+                  <li class="breadcrumb-item active" *ngIf="lvl1">
+                    Templates >
                   </li>
 
                   <li class="breadcrumb-item active" aria-current="page">
-                    {{ lvl1 }}<span *ngIf="lvl2">></span>
+                    {{ lvl1 }}<span *ngIf="lvl2"> ></span>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">
                     {{ lvl2 }}<span *ngIf="lvl3">></span>
@@ -165,7 +165,7 @@
               </nav>
             </div>
 
-            <div class="row" style="background-color: #fff">
+            <div class="row" *ngIf="tabs.length > 0">
               <div class="col-12 col-lg-12">
                 <div class="tab">
                   <ul class="nav nav-tabs" role="tablist">
@@ -174,7 +174,7 @@
                       *ngFor="let one of tabs; let i = index"
                     >
                       <a
-                        class="nav-link active"
+                        class="nav-link"
                         data-bs-toggle="tab"
                         role="tab"
                         href="#tab-{{ i }}"
@@ -210,7 +210,10 @@
                         />
                         <div class="middle">
                           <div class="text">
-                            <img src="../../assets/edit_icon.png" (click)="editTemplate(template)"/>
+                            <img
+                              src="../../assets/edit_icon.png"
+                              (click)="editTemplate(template)"
+                            />
                             <span><strong>EDIT</strong></span>
                           </div>
                           <div class="text">

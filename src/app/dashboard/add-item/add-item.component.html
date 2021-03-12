@@ -88,7 +88,7 @@
 
                   <a
                     (click)="popupType = 'Category Type'"
-                    [ngClass]="!!industryType.value ? '' : 'disableLink'"
+                    [ngClass]="!!industryTypeDrp.value ? '' : 'disableLink'"
                     data-toggle="modal"
                     data-target="#exampleModal"
                     ><img class="drp-dwn" src="../../assets/pluse_dropdown.png"
@@ -124,11 +124,11 @@
                   data-bs-toggle="dropdown"
                 >
                   <img
-                    src="../../assets/avatar.jpg"
-                    class="avatar img-fluid rounded me-1"
+                    src="assets/icons/account_icon.png"
+                    class="avatar img-fluid me-1"
                     alt="Charles Hall"
                   />
-                  <span class="text-dark">Charles Hall</span>
+                  <span class="text-dark">{{ userName }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
                   <a class="dropdown-item" href="#">Log out</a>

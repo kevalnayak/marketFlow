@@ -27,8 +27,9 @@ export class DashboardComponent implements OnInit {
   current: any;
   downloadUrl: string;
   tabContentIndex = false;
-
+  userName: string;
   ngOnInit(): void {
+    this.userName = localStorage.getItem('userName');
     this.downloadUrl = 'https://' + localStorage.getItem('downloadurl') + '/';
     this.getLevels('first', -1);
     this.getPolicy();
