@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SharedService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   login(data) {
     return this.http.post(`${environment.url}common/login`, data);
@@ -49,12 +49,29 @@ export class SharedService {
 
   uploadImageAndFile(data, uid) {
     return this.http.post(
-      `${environment.url}common/genericupload/?completeUploadClass=adc.dsms.db.acMediaCompleteUpload,adc.dsms.db&uid=${uid}`,
+      `https://${localStorage.getItem(
+        'uploadurl'
+      )}/?completeUploadClass=adc.dsms.db.acMediaCompleteUpload,adc.dsms.db&uid=${uid}`,
       data
     );
   }
 
   deleteTheme(id) {
-    return this.http.get(`${environment.url}theme/delete/${id}`)
+    return this.http.get(`${environment.url}theme/delete/${id}`);
+  }
+
+  getPolicy() {
+    return this.http.get(`${environment.url}common/policy/ntypeadm/kr/web`);
+  }
+
+  getTemplates(id) {
+    return this.http.get(`${environment.url}httemplate/getbasetemplates/${id}`);
+  }
+
+  updateTemplate(data) {
+    return this.http.post(
+      `${environment.url}httemplate/updatebasetemplate`,
+      data
+    );
   }
 }

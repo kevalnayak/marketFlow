@@ -1,5 +1,20 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from 'src/app/shared/loader/loader.service/loader.service';
 import { LanguageService } from 'src/app/shared/services/language.service';
 import { SharedService } from 'src/app/shared/services/shared-service.service';
@@ -16,27 +31,52 @@ export class AddItemComponent implements OnInit {
   Image: any;
   popupType = '';
   typeString = '';
-  orientationArry = [];
+  orientationArry = [
+    { themeid: '0', name: 'Potrait' },
+    { themeid: '1', name: 'Landscaape' },
+  ];
   industryArry = [];
   categoryArry = [];
-  localData: void;
   accountArry = [];
   resourceModel: any = {};
   uid: any;
+  imageName: any;
+  fileName: any;
   payloadImg: any;
   payloadFile: any;
-  @ViewChild('checkPublic') checkPublic: ElementRef;
-  @ViewChild('checkPrivate') checkPrivate: ElementRef;
+  today = new Date();
+  nextDate = new Date(new Date().setMonth(this.today.getMonth() + 3));
+  modalRef: BsModalRef;
+  templateData: any;
+  accountDrp = new FormControl('');
+  orientationDrp = new FormControl('');
+  industryTypeDrp = new FormControl('');
+  categoryDrp = new FormControl('');
+  imageFileControl = new FormControl('');
+  fileControl = new FormControl('');
+  isUploadChange = false;
+  @ViewChild('file', { static: false }) file: ElementRef;
+  @ViewChild('imageFile', { static: false }) imageFile: ElementRef;
+  @ViewChild('orientation', { static: false }) orientation: ElementRef;
+  @ViewChild('industryType', { static: false }) industryType: ElementRef;
+  @ViewChild('category', { static: false }) category: ElementRef;
+  @ViewChild('checkPublic', { static: true }) checkPublic: ElementRef;
+  @ViewChild('checkPrivate', { static: true }) checkPrivate: ElementRef;
   @ViewChild('closebutton') closebutton: ElementRef;
-  @ViewChild('account') account: ElementRef;
-  
-  checkedFlag = true;
+  @ViewChild('account', { static: true }) account: ElementRef;
+
   constructor(
     public fb: FormBuilder,
     private sharedService: SharedService,
     private languageService: LanguageService,
-    public loader: LoaderService
-  ) { }
+    public loader: LoaderService,
+    private toaster: ToastrService,
+    private router: Router,
+    private modalService: BsModalService,
+    private renderer: Renderer2
+  ) {
+    this.templateData = this.router.getCurrentNavigation().extras.state;
+  }
 
   ngOnInit(): void {
     this.languageService
@@ -44,18 +84,35 @@ export class AddItemComponent implements OnInit {
       .subscribe((res) => {
         this.resourceModel = res;
       });
-    let data = localStorage.getItem('loginDetail');
-    this.localData = JSON.parse(data);
     this.bindDropDown();
     this.formInit();
-    this.uid = this.localData['uid'];
+    this.uid = localStorage.getItem('uid');
+    if (!!this.templateData && !!this.templateData.fID) {
+      this.Image =
+        'https://' +
+        localStorage.getItem('downloadurl') +
+        '/' +
+        this.templateData.fPreviewMediaID +
+        '.jpg';
+      this.imageFileControl.setValue(this.Image);
+      this.fileControl.setValue(this.templateData.fResourceMediaID);
+      if (this.templateData.fPrivateDomainID === -1) {
+        this.checkPublic.nativeElement.checked = true;
+        this.account.nativeElement.disabled = true;
+      } else {
+        this.checkPrivate.nativeElement.checked = true;
+        this.account.nativeElement.disabled = false;
+      }
+    }
   }
 
   ngAfterViewInit() {
-    this.checkPublic.nativeElement.checked = true;
-    this.form.publiccheckType.setValue('public');
-    this.account.nativeElement.disabled = true;
-    this.checkedFlag = false;
+    if (!!this.templateData) {
+    } else {
+      this.checkPublic.nativeElement.checked = true;
+      this.account.nativeElement.disabled = true;
+      this.ItemForm.controls.fPrivateDomainID.setValue(-1);
+    }
   }
 
   get form() {
@@ -63,73 +120,98 @@ export class AddItemComponent implements OnInit {
   }
 
   bindDropDown() {
-    //this.sharedService.getOrienation().subscribe(res => {
-    // if (res['errcode'] == 0) {
-    this.orientationArry = [];
-    let obj = [
-      {
-        themeid: '0',
-        name: 'potrait',
-      },
-      {
-        themeid: '1',
-        name: 'landscape',
-      },
-    ];
-    this.orientationArry.push(obj);
-    //  }
-    // });
-
     //For sub domain
     this.loader
-      .attach(this.sharedService.getSubdomain(this.localData['domainid']))
-      .subscribe((res) => {
-        if (res['errcode'] == 0) {
-          this.accountArry = [];
-          this.accountArry.push(res['domains']);
-        }
-      });
+      .attach(this.sharedService.getSubdomain(localStorage.getItem('domainid')))
+      .subscribe(
+        (res) => {
+          if (res['errcode'] == 0) {
+            this.accountArry = res['domains'];
+            if (!!this.templateData) {
+              this.accountDrp.patchValue(
+                this.templateData.fPrivateDomainID === -1
+                  ? ''
+                  : this.templateData.fPrivateDomainID
+              );
+              this.accountDrp.updateValueAndValidity();
+            }
+          }
+        },
+        (err) => {}
+      );
   }
 
-  changeOrientation(item) {
-    //let newItem = item.find(x => x.themeid == this.form.sideDrop1.value);
-    this.loader
-      .attach(this.sharedService.getIndustry(Number(this.form.sideDrop1.value)))
-      .subscribe((res) => {
-        if (res['errcode'] == 0) {
-          this.industryArry = [];
-          this.industryArry.push(res['list']);
-        }
-      });
+  changeOrientation(event) {
+    if (!!event.currentTarget && !!event.currentTarget.value) {
+      this.getIndustryTypeList(event.currentTarget.value);
+    } else {
+      if (!!event) {
+        this.getIndustryTypeList(event);
+      }
+    }
   }
 
-  changeIndustryType(item) {
-    //let newItem = item.find(x => x.themeid == this.form.sideDrop2.value);
-    this.loader
-      .attach(this.sharedService.getIndustry(Number(this.form.sideDrop2.value)))
-      .subscribe((res) => {
+  getIndustryTypeList(id) {
+    this.loader.attach(this.sharedService.getIndustry(Number(id))).subscribe(
+      (res) => {
         if (res['errcode'] == 0) {
-          this.categoryArry = [];
-          this.categoryArry.push(res['list']);
+          this.industryArry = res['list'].filter(
+            (x) => x.editable === Number(this.orientationDrp.value)
+          );
         }
-      });
+      },
+      (err) => {}
+    );
+  }
+
+  changeIndustryType(event) {
+    if (!!event.currentTarget && !!event.currentTarget.value) {
+      this.getCategoryList(this.industryType.nativeElement.value);
+    } else {
+      if (!!event) {
+        this.getCategoryList(event);
+      }
+    }
+  }
+
+  getCategoryList(id) {
+    this.loader.attach(this.sharedService.getIndustry(Number(id))).subscribe(
+      (res) => {
+        if (res['errcode'] == 0) {
+          this.categoryArry = res['list'];
+        }
+      },
+      (err) => {}
+    );
+  }
+
+  changeCategory(event) {
+    if (!!event.currentTarget.value) {
+      this.ItemForm.controls.fThemeID.setValue(
+        Number(event.currentTarget.value)
+      );
+    }
   }
 
   createCategory() {
     let obj = {
       name: this.typeString,
       parentid:
-        this.popupType == 'Category Type'
-          ? Number(this.form.sideDrop2.value)
+        this.popupType === 'Category Type'
+          ? Number(this.industryType.nativeElement.value)
           : -1,
-      editable: Number(this.form.sideDrop1.value),
+      editable: Number(this.orientation.nativeElement.value),
     };
-    this.loader
-      .attach(this.sharedService.createCategory(obj))
-      .subscribe((res) => {
+    this.loader.attach(this.sharedService.createCategory(obj)).subscribe(
+      (res) => {
+        this.popupType === 'Category Type'
+          ? this.changeIndustryType(obj.parentid)
+          : this.changeOrientation(obj.parentid);
         this.typeString = '';
         this.closebutton.nativeElement.click();
-      });
+      },
+      (err) => {}
+    );
   }
 
   closePopup() {
@@ -146,33 +228,69 @@ export class AddItemComponent implements OnInit {
 
   formInit() {
     this.ItemForm = this.fb.group({
-      sideDrop1: [''],
-      sideDrop2: [''],
-      sideDrop3: [''],
-      name: ['', [Validators.required]],
-      checkType: [''],
-      formDrop: [''],
-      fPreviewMediaID: [''],
-      fResourceMediaID: [''],
-      privatecheckType: [''],
-      publiccheckType: ['']
+      fID: [!!this.templateData ? this.templateData.fID : ''],
+      fName: [
+        !!this.templateData ? this.templateData.fName : '',
+        Validators.required,
+      ],
+      fPreviewMediaID: [
+        !!this.templateData ? this.templateData.fPreviewMediaID : '',
+      ],
+      fResourceMediaID: [
+        !!this.templateData ? this.templateData.fResourceMediaID : '',
+      ],
+      fOutputType: [2],
+      fStartDate: [
+        !!this.templateData
+          ? this.templateData.fStartDate
+          : this.today.getFullYear() +
+            '-' +
+            (this.today.getMonth() + 1) +
+            '-' +
+            this.today.getDate(),
+      ],
+      fEndDate: [
+        !!this.templateData
+          ? this.templateData.fEndDate
+          : this.nextDate.getFullYear() +
+            '-' +
+            (this.nextDate.getMonth() + 1) +
+            '-' +
+            this.nextDate.getDate(),
+      ],
+      fMovieMediaID: [-1],
+      fMovieX: [0],
+      fMovieY: [0],
+      fRecommend: [false],
+      fRefMediaIDs: [''],
+      fOrder: [!!this.templateData ? this.templateData.fOrder : 0],
+      fThemeID: [
+        !!this.templateData ? this.templateData.fThemeID : '',
+        Validators.required,
+      ],
+      fPrivateDomainID: [
+        !!this.templateData ? this.templateData.fPrivateDomainID : '',
+        Validators.required,
+      ],
     });
   }
 
   onFileChanged(files, type) {
+    this.isUploadChange = true;
     if (type === 'img') {
+      this.imageName = files[0].name;
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
       reader.onload = (_event) => {
         const imageUrlBase64 = reader.result;
         this.Image = reader.result;
-        const blob = this.b64toBlob(imageUrlBase64.slice(23));
+        const blob = this.b64toBlob(imageUrlBase64);
         const filename = Math.random().toString(20).substr(2, 6) + '.jpg';
         this.payloadImg = new FormData();
         this.payloadImg.append('uploadedfile', blob, filename);
-        // this.uploadfileOrImage(this.payloadImg, 'img');
       };
     } else if (type === 'htr') {
+      this.fileName = files[0].name;
       const fileToUpload = files.item(0);
       if (files.length === 0) {
         return;
@@ -183,126 +301,141 @@ export class AddItemComponent implements OnInit {
       }
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
-      reader.onload = (_event) => { };
+      reader.onload = (_event) => {};
       this.payloadFile = new FormData();
       this.payloadFile.append('uploadedfile', fileToUpload);
     }
   }
 
- async uploadfileOrImage(payload, type) {
-   await this.sharedService.uploadImageAndFile(payload, this.uid).toPromise().then(
-      (res) => {
-        if (res['errcode'] === 0) {
-          if (type === 'img') {
-            this.ItemForm.controls.fPreviewMediaID.setValue(res['result']);
+  async uploadfileOrImage(payload, type) {
+    await this.sharedService
+      .uploadImageAndFile(payload, this.uid)
+      .toPromise()
+      .then(
+        (res) => {
+          if (res['errcode'] === 0) {
+            if (type === 'img') {
+              this.ItemForm.controls.fPreviewMediaID.setValue(
+                Number(res['result'])
+              );
+            } else {
+              this.ItemForm.controls.fResourceMediaID.setValue(
+                Number(res['result'])
+              );
+            }
           } else {
-            this.ItemForm.controls.fResourceMediaID.setValue(res['result']);
+            type === 'img'
+              ? this.ItemForm.controls.fPreviewMediaID.setValue('')
+              : this.ItemForm.controls.fResourceMediaID.setValue('');
           }
-        } else {
-          type === 'img'
-            ? this.ItemForm.controls.fPreviewMediaID.setValue('')
-            : this.ItemForm.controls.fResourceMediaID.setValue('');
+        },
+        (err) => {
+          this.toaster.error(
+            `Something went wrong while uploading ${
+              type === 'img' ? 'Image' : 'file'
+            }`
+          );
         }
-      },
-      (err) => { }
-    );
+      );
   }
 
-  b64toBlob(b64Data, contentType = '', sliceSize = 512) {
-    const byteCharacters = b64Data;//atob(b64Data);
-    const byteArrays = [];
+  b64toBlob(dataURI) {
+    var byteString = atob(dataURI.split(',')[1]);
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
 
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
     }
-
-    const blob = new Blob(byteArrays, { type: contentType });
-    return blob;
+    return new Blob([ab], { type: 'image/jpeg' });
   }
 
   cancel() {
-    this.Image = '../../assets/tab-img.png';
+    this.payloadImg = '';
+    this.payloadFile = '';
+    this.orientation.nativeElement.value = '';
+    this.industryType.nativeElement.value = '';
+    this.category.nativeElement.value = '';
+    this.imageFile.nativeElement.value = '';
+    this.account.nativeElement.value = '';
+    this.file.nativeElement.value = '';
+    this.router.navigate(['/dashboard']);
   }
 
   keyUpVlidation(event) {
     let val = event.target.value.trim();
-    if (val == '') {
+    if (val === '') {
       this.typeString = '';
     }
   }
 
   async save() {
-    console.log(this.payloadImg, 'imagg');
-    console.log(this.payloadFile, 'htrrr');
-    await this.uploadfileOrImage(this.payloadImg, 'img');
-    await this.uploadfileOrImage(this.payloadFile, 'htr');
-    var d = new Date();
-    var nd = new Date(new Date().setMonth(d.getMonth() + 3));
-    let obj = {
-      fName: this.form.name.value,
-      fPreviewMediaID: this.form.fPreviewMediaID.value,
-      fResourceMediaID: this.form.fResourceMediaID.value,
-      fOutputType: 0,
-      fStartDate: d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate(),
-      fEndDate: nd.getFullYear() + '-' + (nd.getMonth()+1) + '-' + nd.getDate(),
-      fMovieMediaID: -1,
-      fMovieX: 0,
-      fMovieY: 0,
-      fRecommend: false,
-      fRefMediaIDs: '',
-      fOrder: 2,
-      fThemeID: 2,
-      fPrivateDomainID: this.checkPublic.nativeElement.checked ? -1 : this.localData['domainid'],
-    };
-    this.loader.attach(this.sharedService.create(obj)).subscribe((res) => {
-      if (res['errcode'] == 0) {
-      }
-    });
+    if (this.isUploadChange) {
+      await this.uploadfileOrImage(this.payloadImg, 'img');
+      await this.uploadfileOrImage(this.payloadFile, 'htr');
+    }
+    if (
+      !!this.ItemForm.controls.fPreviewMediaID.value &&
+      !!this.ItemForm.controls.fResourceMediaID.value
+    ) {
+      const saveMethod = !!this.ItemForm.controls.fID.value
+        ? this.loader.attach(
+            this.sharedService.updateTemplate(this.ItemForm.value)
+          )
+        : this.loader.attach(this.sharedService.create(this.ItemForm.value));
+      saveMethod.subscribe(
+        (res) => {
+          if (res['errcode'] == 0) {
+            this.toaster.success(
+              this.ItemForm.controls.fID.value
+                ? 'Update template Successfully!'
+                : 'Create template successfully!'
+            );
+            this.router.navigate(['/dashboard']);
+          }
+        },
+        (err) => {}
+      );
+    }
   }
 
   changeType(event) {
+    this.ItemForm.controls.fPrivateDomainID.setValue('');
     if (event.target.value == 'public') {
-      this.checkedFlag = false;
-      this.form.formDrop.setValue(null);
-      this.form.formDrop.setValidators(null);
-      this.form.formDrop.updateValueAndValidity();
+      this.account.nativeElement.value = '';
       this.account.nativeElement.disabled = true;
       this.checkPublic.nativeElement.checked = true;
       this.checkPrivate.nativeElement.checked = false;
-      this.form.publiccheckType.setValue('public');
+      this.ItemForm.controls.fPrivateDomainID.setValue(-1);
     } else {
-      this.checkedFlag = false;
+      this.account.nativeElement.value = '';
       this.account.nativeElement.disabled = false;
-      this.form.formDrop.setValidators(Validators.required);
-      this.form.formDrop.updateValueAndValidity();
       this.checkPrivate.nativeElement.checked = true;
       this.checkPublic.nativeElement.checked = false;
-      this.form.privatecheckType.setValue('private');
-    }
-
-    if (
-      !this.checkPrivate.nativeElement.checked &&
-      !this.checkPublic.nativeElement.checked
-    ) {
-      this.form.publiccheckType.setValue('');
-      this.form.privatecheckType.setValue('');
     }
   }
+
+  changeAccount(event) {
+    if (!!event.currentTarget.value) {
+      this.ItemForm.controls.fPrivateDomainID.setValue(
+        Number(event.currentTarget.value)
+      );
+    }
+  }
+
   delete() {
     if (this.form.sideDrop3.value != '') {
-      this.sharedService.deleteTheme(this.form.sideDrop3.value).subscribe(res => {
-        if (res['errcode'] == 0) {
-          this.closebutton.nativeElement.click();
-        }
-      })
+      this.sharedService
+        .deleteTheme(this.form.sideDrop3.value)
+        .subscribe((res) => {
+          if (res['errcode'] == 0) {
+            this.closebutton.nativeElement.click();
+          }
+        });
     }
+  }
+
+  openDeleteModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
   }
 }

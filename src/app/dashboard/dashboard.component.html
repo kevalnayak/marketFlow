@@ -169,15 +169,16 @@
               <div class="col-12 col-lg-12">
                 <div class="tab">
                   <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item" *ngFor="let one of tabs">
+                    <li
+                      class="nav-item"
+                      *ngFor="let one of tabs; let i = index"
+                    >
                       <a
                         class="nav-link active"
-                        href="#tab-1"
                         data-bs-toggle="tab"
                         role="tab"
-                        (click)="
-                          getLevels('third', one.themeid); lvl2 = one.name
-                        "
+                        href="#tab-{{ i }}"
+                        (click)="getTemplates(one.themeid, i); lvl2 = one.name"
                         >{{ one.name }} ({{ one.count }})</a
                       >
                     </li>
@@ -189,24 +190,37 @@
                                                 role="tab">반려동물 (6)</a></li> -->
                   </ul>
                   <div class="tab-content">
-                    <div class="tab-pane active" id="tab-1" role="tabpanel">
-                      <!-- <h4 class="tab-title">Default tabs</h4>
-                                            <div class="tab-container">
-                                                <img src="../../assets/tab-img.png" alt="Avatar" class="tab-image"
-                                                    style="width:100%">
-                                                <div class="middle">
-                                                    <div class="text">
-                                                        <img src="../../assets/edit_icon.png">
-                                                        <span><strong>EDIT</strong></span>
-                                                    </div>
-                                                    <div class="text">
-                                                        <img src="../../assets/delete.png">
-                                                        <span><strong>DELETE</strong></span>
-                                                    </div>
-                                                </div>
-                                            </div> -->
+                    <div
+                      class="tab-pane active d-flex"
+                      id="tab-{{ tabContentIndex }}"
+                      role="tabpanel"
+                    >
+                      <div
+                        class="tab-container ml-4"
+                        id="{{ j }}"
+                        *ngFor="let template of templateList; let j = index"
+                      >
+                        <img
+                          src="{{
+                            downloadUrl + template.fPreviewMediaID + '.jpg'
+                          }}"
+                          alt="Avatar"
+                          class="tab-image"
+                          style="width: 100%"
+                        />
+                        <div class="middle">
+                          <div class="text">
+                            <img src="../../assets/edit_icon.png" (click)="editTemplate(template)"/>
+                            <span><strong>EDIT</strong></span>
+                          </div>
+                          <div class="text">
+                            <img src="../../assets/delete.png" />
+                            <span><strong>DELETE</strong></span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="tab-pane" id="tab-2" role="tabpanel">
+                    <!-- <div class="tab-pane" id="tab-2" role="tabpanel">
                       <h4 class="tab-title">Another one</h4>
                       <p>
                         Lorem ipsum dolor sit amet, consectetuer adipiscing
@@ -256,7 +270,7 @@
                         eget, arcu. In enim justo, rhoncus ut, imperdiet a,
                         venenatis vitae, justo.
                       </p>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
