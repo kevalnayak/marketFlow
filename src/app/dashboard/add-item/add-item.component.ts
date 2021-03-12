@@ -54,7 +54,9 @@ export class AddItemComponent implements OnInit {
   categoryDrp = new FormControl('');
   imageFileControl = new FormControl('');
   fileControl = new FormControl('');
-  isUploadChange = false;
+  isUploadImageChange = false;
+  isUploadFileChange = false;
+  allLevels = [];
   @ViewChild('file', { static: false }) file: ElementRef;
   @ViewChild('imageFile', { static: false }) imageFile: ElementRef;
   @ViewChild('orientation', { static: false }) orientation: ElementRef;
@@ -88,6 +90,7 @@ export class AddItemComponent implements OnInit {
     this.formInit();
     this.uid = localStorage.getItem('uid');
     if (!!this.templateData && !!this.templateData.fID) {
+      this.getAllLevelsData();
       this.Image =
         'https://' +
         localStorage.getItem('downloadurl') +
@@ -104,6 +107,27 @@ export class AddItemComponent implements OnInit {
         this.account.nativeElement.disabled = false;
       }
     }
+  }
+
+  getAllLevelsData() {
+    this.sharedService.getAllLevels().subscribe(
+      (res) => {
+        if (res['errcode'] == 0) {
+          this.allLevels = res['list'].filter(
+            (x) => x.themeid === this.templateData.fThemeID
+          );
+          this.orientationDrp.setValue(this.allLevels[0].editable);
+          this.getCategoryList(this.allLevels[0].parentid);
+          this.getIndustryTypeList(this.orientationDrp.value);
+          this.industryTypeDrp.setValue(this.allLevels[0].parentid);
+          this.categoryDrp.setValue(this.templateData.fThemeID);
+          this.orientationDrp.updateValueAndValidity();
+          this.industryTypeDrp.updateValueAndValidity();
+          this.categoryDrp.updateValueAndValidity();
+        }
+      },
+      (err) => {}
+    );
   }
 
   ngAfterViewInit() {
@@ -276,8 +300,8 @@ export class AddItemComponent implements OnInit {
   }
 
   onFileChanged(files, type) {
-    this.isUploadChange = true;
     if (type === 'img') {
+      this.isUploadImageChange = true;
       this.imageName = files[0].name;
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
@@ -290,6 +314,7 @@ export class AddItemComponent implements OnInit {
         this.payloadImg.append('uploadedfile', blob, filename);
       };
     } else if (type === 'htr') {
+      this.isUploadFileChange = true;
       this.fileName = files[0].name;
       const fileToUpload = files.item(0);
       if (files.length === 0) {
@@ -370,8 +395,10 @@ export class AddItemComponent implements OnInit {
   }
 
   async save() {
-    if (this.isUploadChange) {
+    if (this.isUploadImageChange) {
       await this.uploadfileOrImage(this.payloadImg, 'img');
+    }
+    if (this.isUploadFileChange) {
       await this.uploadfileOrImage(this.payloadFile, 'htr');
     }
     if (

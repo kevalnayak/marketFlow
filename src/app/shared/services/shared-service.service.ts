@@ -74,4 +74,8 @@ export class SharedService {
       data
     );
   }
+
+  getAllLevels() {
+    return this.http.get(`${environment.url}theme/getthemes/0`);
+  }
 }
