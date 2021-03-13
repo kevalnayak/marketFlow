@@ -35,6 +35,8 @@ export class DashboardComponent implements OnInit {
   userName: string;
   @ViewChild('closebutton') closebutton: ElementRef;
   deleteid: any
+  today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+  nextMDate = new Date(new Date().setMonth(this.today.getMonth() + 1));
   async ngOnInit(): Promise<void> {
     this.userName = localStorage.getItem('userName');
     this.downloadUrl = 'https://' + localStorage.getItem('downloadurl') + '/';
@@ -44,10 +46,12 @@ export class DashboardComponent implements OnInit {
     if (lvl1) {
       this.lvl1 = lvl1
     }
-    if (lvl2) { this.lvl2 = lvl2['name'], this.current = lvl2['name'], this.getLevels('second', { themeid: lvl2.themeid },'initTime') }
-    if (lvl3) { this.lvl3 = lvl3.data['name'], this.getTemplates(lvl3.data.themeid, lvl3.index,'initTime') }
+    if (lvl2) { this.lvl2 = lvl2['name'], this.current = lvl2['name'], this.getLevels('second', { themeid: lvl2.themeid }, 'initTime') }
+    if (lvl3) { this.lvl3 = lvl3.data['name'], this.getTemplates(lvl3.data.themeid, lvl3.index, 'initTime') }
     this.getLevels('first', { themeid: -1 });
     this.getPolicy();
+    console.log(this.nextMDate);
+
   }
 
   getPolicy() {
@@ -56,6 +60,7 @@ export class DashboardComponent implements OnInit {
         if (res['errcode'] === 0) {
           localStorage.setItem('downloadurl', res['downloadurl']);
           localStorage.setItem('uploadurl', res['uploadurl']);
+          this.downloadUrl = 'https://' + localStorage.getItem('downloadurl') + '/';
         }
       },
       (err) => { }
@@ -63,7 +68,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getLevels(flag, data, isinit?) {
-    (this.lvl1) ? localStorage.setItem('lvl1', this.lvl1) : ''
+    (this.lvl1) ? localStorage.setItem('lvl1', this.lvl1) : '';
     this.loader
       .attach(this.shareService.sidebarMenu(data.themeid))
       .subscribe((res: any) => {
@@ -129,12 +134,14 @@ export class DashboardComponent implements OnInit {
   //   })
   // }
 
-  getTemplates(id, i,init?) {
+  getTemplates(id, i, init?) {
     (!init) ? localStorage.setItem('lvl3', JSON.stringify({ data: this.tabs[i], 'index': i })) : ''
     this.shareService.getTemplates(id).subscribe(
       (res) => {
         if (res['errcode'] === 0) {
-          this.templateList = res['list'];
+          this.templateList = res['list'].filter(x => {
+           return x.isNew = (new Date(x.fStartDate) <= this.today && new Date(x.fStartDate) <= this.nextMDate)
+          })
           this.setTabContent(i);
         }
       },

@@ -131,6 +131,7 @@
                   <div class="tab-content">
                     <div class="tab-pane active d-flex" id="tab-{{ tabContentIndex }}" role="tabpanel">
                       <div class="tab-container ml-4" id="{{ j }}" *ngFor="let template of templateList; let j = index">
+                        <span *ngIf="template.isNew">New</span>
                         <img src="{{
                             downloadUrl + template.fPreviewMediaID + '.jpg'
                           }}" alt="Avatar" class="tab-image" style="width: 100%" />

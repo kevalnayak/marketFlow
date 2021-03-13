@@ -4,6 +4,7 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AddItemComponent } from './add-item/add-item.component';
 import { SharedModule } from '../shared/shared.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     SharedModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    NgSelectModule
   ]
 })
 export class DashboardModule { }
