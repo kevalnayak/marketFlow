@@ -14067,10 +14067,11 @@ body[data-theme=light] .sidebar-dropdown .sidebar-item.active .sidebar-link {
 .sidebar-brand {
     font-weight: 600;
     font-size: 1.15rem;
-    padding: 1.15rem 1.5rem;
+    padding: 1.10rem 1.5rem;
     display: block;
     color: #222e3c;
     background-color: #fff;
+	border-right: 1px solid #cacaca !important;
 }
 
 body[data-theme=dark] .sidebar-brand {

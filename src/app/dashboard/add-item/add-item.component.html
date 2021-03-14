@@ -128,7 +128,13 @@
           >
             <i class="hamburger align-self-center"></i>
           </a>
-          <h3>Template</h3>
+          <h3 class="titleColor">
+            {{
+              !!ItemForm.controls.fID.value
+                ? "Update Template"
+                : "Create Template"
+            }}
+          </h3>
 
           <div class="navbar-collapse collapse">
             <ul class="navbar-nav navbar-align">
