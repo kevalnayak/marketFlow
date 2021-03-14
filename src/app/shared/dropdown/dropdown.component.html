@@ -1,41 +1,34 @@
-<div
-  class="dropdown-wrapper outline-none inner-dropdown {{ className }}"
-  [ngClass]="{ 'is-open': isOpen, disabled: isReadOnly, focus: isFocused }"
-  (contextmenu)="$event.stopPropagation()"
->
-  <div class="box" (click)="toggle($event)">
-    <div class="dropdown-selected" *ngIf="isSelectedValue">
-      <span
-        >{{ optionText(selected) }}
 
-        <span
-          class="dropdown-close-custom pr-0"
-          (click)="deleteOption(selected)"
-          *ngIf="showIconOptionSelected(selected) === 0"
-          >X</span
-        >
-      </span>
-    </div>
-    <div class="dropdown-selected gray" *ngIf="!isSelectedValue">
-      <span class="not-active">{{ placeholder }}</span>
-    </div>
-  </div>
+<!-- Styled non screen reader select -->
+<div class='styled-select' aria-hidden=true>
+  <ng-select [items]="items" 
+             [placeholder]=placeholder 
+             [(ngModel)]="model"
+             name="ngselect" 
+             (change)=modelChanged()
+             attr.aria-label={{ariaLabel}} [clearable]="false" name="fieldName" ngDefaultControl>
 
-  <ul class="dropdown-options">
-    <ng-container>
-      <li
-        *ngFor="let option of options; let i = index"
-        [class.active]="selected === i"
-        (click)="optionSelect(i, $event)"
-      >
-        {{ optionText(i) }}
-        <span
-          class="dropdown-close-custom"
-          (click)="deleteOption(i)"
-          *ngIf="option.count === 0"
-          >X</span
-        >
-      </li>
-    </ng-container>
-  </ul>
+    <ng-template ng-label-tmp let-item="item">
+      <ng-container *ngTemplateOutlet="labelTemplate; context: { $implicit: item }"></ng-container>
+    </ng-template>
+    
+    <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+      <ng-container *ngTemplateOutlet="optionTemplate; context: { $implicit: item }"></ng-container>
+    </ng-template>
+
+  </ng-select>
 </div>
+
+<!-- screen reader only standard select 
+    (Remove the sr-only class to see this) -->
+<select #standardSelect [(ngModel)]="model" (change)=modelChanged() class='sr-only' attr.aria-label='{{ariaLabel}}'>
+
+  <!-- Also getting interpolation error here. Below renders as a string "item.abbreviation" rather than interpolating -->
+  <option *ngFor="let item of items" [ngValue]="item">{{selectField}}</option>
+
+  <!-- This also renders as a string -->
+  <!-- <option *ngFor="let item of items" [ngValue]="item" [innerHTML]="selectField"></option> -->
+
+  <!-- Hardcoded value below works -->
+  <!-- <option *ngFor="let item of items" [ngValue]="item">{{item.abbreviation}}</option> -->
+</select>

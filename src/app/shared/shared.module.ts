@@ -2,13 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { DropdownComponent } from './dropdown/dropdown.component';
+import { NgSelectAccessibleComponent } from './dropdown/dropdown.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 @NgModule({
-  declarations: [DropdownComponent],
+  declarations: [NgSelectAccessibleComponent],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgSelectModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -16,7 +18,7 @@ import { DropdownComponent } from './dropdown/dropdown.component';
     FormsModule,
     ReactiveFormsModule,
     ModalModule,
-    DropdownComponent,
+    NgSelectAccessibleComponent,
   ],
 })
-export class SharedModule {}
+export class SharedModule { }

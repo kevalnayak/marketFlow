@@ -6,11 +6,8 @@
           <a class="sidebar-brand" href="#">
             <span class="align-middle">Template Market</span>
           </a>
-          <a
-            class="sidebar-toggle toggle-sidebar"
-            [ngClass]="!toggleFlag ? 'innerToggle' : 'outsideToggle'"
-            (click)="addToggle()"
-          >
+          <a class="sidebar-toggle toggle-sidebar" [ngClass]="!toggleFlag ? 'innerToggle' : 'outsideToggle'"
+            (click)="addToggle()">
             <i class="hamburger align-self-center"></i>
           </a>
 
@@ -19,19 +16,12 @@
               <div class="card-body">
                 <label class="form-label">{{
                   resourceModel.Orientation
-                }}</label>
+                  }}</label>
                 <div class="input-group mb-4">
-                  <select
-                    class="form-select"
-                    (change)="changeOrientation($event)"
-                    #orientation
-                    [formControl]="orientationDrp"
-                  >
+                  <select class="form-select" (change)="changeOrientation($event)" #orientation
+                    [formControl]="orientationDrp">
                     <option value="">Select</option>
-                    <option
-                      *ngFor="let item of orientationArry"
-                      [value]="item.themeid"
-                    >
+                    <option *ngFor="let item of orientationArry" [value]="item.themeid">
                       {{ item.name }}
                     </option>
                   </select>
@@ -39,34 +29,22 @@
 
                 <label class="form-label">{{
                   resourceModel.IndustryType
-                }}</label>
+                  }}</label>
                 <div class="input-group mb-4">
-                  <select
-                    #industryType
-                    [formControl]="industryTypeDrp"
-                    (change)="changeIndustryType($event)"
-                    class="form-select"
-                  >
+                  <select #industryType [formControl]="industryTypeDrp" (change)="changeIndustryType($event)"
+                    class="form-select">
                     <option value="">Select</option>
-                    <option
-                      *ngFor="let item of industryArry"
-                      [value]="item.themeid"
-                    >
+                    <option *ngFor="let item of industryArry" [value]="item.themeid">
                       {{ item.name }}
                     </option>
                   </select>
-                  <a
-                    class="plus-btn"
-                    (click)="popupType = 'Industry Type'"
-                    [ngClass]="!!orientation.value ? '' : 'disableLink'"
-                    data-toggle="modal"
-                    data-target="#exampleModal"
-                    ><img class="drp-dwn" src="../../assets/pluse_dropdown.png"
-                  /></a>
+                  <a class="plus-btn" (click)="popupType = 'Industry Type'"
+                    [ngClass]="!!orientation.value ? '' : 'disableLink'" data-toggle="modal"
+                    data-target="#exampleModal"><img class="drp-dwn" src="../../assets/pluse_dropdown.png" /></a>
                 </div>
                 <label class="form-label">{{
                   resourceModel.CategoryType
-                }}</label>
+                  }}</label>
                 <div class="input-group mb-4">
                   <!-- <select
                     #category
@@ -84,17 +62,26 @@
                      
                     </option>
                   </select> -->
-                  <!-- <ng-select
-                    class="form-select"
-                    (clear)="close()"
-                    bindValue="themeid"
-                    [items]="categoryArry"
-                    bindLabel="name"
-                    placeholder="Select"
-                    [formControl]="categoryDrp"
-                  >
+                  <!-- <ng-select class="form-select" (clear)="deleteModalclose()" bindValue="themeid" [items]="categoryArry"
+                    bindLabel="text" placeholder="Select" [formControl]="categoryDrp" [clearable]="true"
+                    (change)="changeFn">
                   </ng-select> -->
-                  <app-dropdown
+                  <ng-select-accessible [formControl]="categoryDrp" [items]=categoryArry [displayField]="'abbreviation'"
+                     [ariaLabel]="'Select'" name="fieldName" ngDefaultControl
+                    (update)=changeFn($event)>
+                    <ng-template #labelTemplate let-item>
+                      <label>
+                        <b>{{item.name}}</b> - <button *ngIf="item.count == 0"
+                          style="background-color: #d11919; border-radius: 50%;" (click)="deleteModalclose()">X</button>
+                      </label>
+                    </ng-template>
+                    <ng-template #optionTemplate let-item>
+                      <label>
+                        <b>{{item.name}}</b>
+                      </label>
+                    </ng-template>
+                  </ng-select-accessible>
+                  <!-- <app-dropdown
                     #category
                     class="form-select"
                     placeholder="Select"
@@ -103,15 +90,10 @@
                     [options]="categoryArry"
                     (change)="changeCategory($event)"
                     (deleteOpt)="deleteCategory($event)"
-                  ></app-dropdown>
-                  <a
-                    class="plus-btn"
-                    (click)="popupType = 'Category Type'"
-                    [ngClass]="!!industryTypeDrp.value ? '' : 'disableLink'"
-                    data-toggle="modal"
-                    data-target="#exampleModal"
-                    ><img class="drp-dwn" src="../../assets/pluse_dropdown.png"
-                  /></a>
+                  ></app-dropdown> -->
+                  <a class="plus-btn" (click)="popupType = 'Category Type'"
+                    [ngClass]="!!industryTypeDrp.value ? '' : 'disableLink'" data-toggle="modal"
+                    data-target="#exampleModal"><img class="drp-dwn" src="../../assets/pluse_dropdown.png" /></a>
                 </div>
               </div>
             </li>
@@ -121,42 +103,21 @@
 
       <div class="main">
         <nav class="navbar navbar-expand navbar-light navbar-bg">
-          <a
-            class="sidebar-toggle toggle-topbar"
-            [ngClass]="toggleFlag ? 'innerToggle' : 'outsideToggle'"
-            (click)="addToggle()"
-          >
+          <a class="sidebar-toggle toggle-topbar" [ngClass]="toggleFlag ? 'innerToggle' : 'outsideToggle'"
+            (click)="addToggle()">
             <i class="hamburger align-self-center"></i>
           </a>
-          <h3 class="titleColor">
-            {{
-              !!ItemForm.controls.fID.value
-                ? "Update Template"
-                : "Create Template"
-            }}
-          </h3>
+          <h3>Template</h3>
 
           <div class="navbar-collapse collapse">
             <ul class="navbar-nav navbar-align">
               <li class="nav-item dropdown">
-                <a
-                  class="nav-icon dropdown-toggle d-inline-block d-sm-none"
-                  href="#"
-                  data-bs-toggle="dropdown"
-                >
+                <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
                   <i class="align-middle" data-feather="settings"></i>
                 </a>
 
-                <a
-                  class="nav-link dropdown-toggle d-none d-sm-inline-block"
-                  href="#"
-                  data-bs-toggle="dropdown"
-                >
-                  <img
-                    src="assets/icons/account_icon.png"
-                    class="avatar img-fluid me-1"
-                    alt="Charles Hall"
-                  />
+                <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                  <img src="assets/icons/account_icon.png" class="avatar img-fluid me-1" alt="Charles Hall" />
                   <span class="text-dark">{{ userName }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
@@ -173,15 +134,8 @@
               <div class="row" style="background-color: #fff">
                 <div class="col-xl-6 col-lg-6 col-xs-12 col-sm-12 backImg">
                   <div class="img-privew mx-auto">
-                    <img
-                      *ngIf="!!Image"
-                      class="mt-4"
-                      height="400px"
-                      width="223px"
-                      [src]="Image"
-                      style="z-index: 2"
-                      alt="Avatar"
-                    />
+                    <img *ngIf="!!Image" class="mt-4" height="400px" width="223px" [src]="Image" style="z-index: 2"
+                      alt="Avatar" />
                   </div>
                 </div>
                 <div class="col-xl-6 col-lg-6 col-xs-12 col-sm-12">
@@ -189,38 +143,24 @@
                     <div class="mb-4">
                       <label class="form-label-name">{{
                         resourceModel.name
-                      }}</label>
-                      <input
-                        type="text"
-                        formControlName="fName"
-                        class="form-control form-control-name"
-                      />
+                        }}</label>
+                      <input type="text" formControlName="fName" class="form-control form-control-name" />
                     </div>
 
                     <div class="mb-4">
                       <label class="form-label-name">{{
                         resourceModel.type
-                      }}</label>
+                        }}</label>
                       <label class="form-check form-check-inline">
-                        <input
-                          #checkPublic
-                          class="form-check-input"
-                          type="checkbox"
-                          value="public"
-                          (click)="changeType($event)"
-                        />
+                        <input #checkPublic class="form-check-input" type="checkbox" value="public"
+                          (click)="changeType($event)" />
                         <span class="form-check-label">
                           {{ resourceModel.public }}
                         </span>
                       </label>
                       <label class="form-check form-check-inline">
-                        <input
-                          #checkPrivate
-                          class="form-check-input"
-                          type="checkbox"
-                          value="private"
-                          (click)="changeType($event)"
-                        />
+                        <input #checkPrivate class="form-check-input" type="checkbox" value="private"
+                          (click)="changeType($event)" />
                         <span class="form-check-label">
                           {{ resourceModel.private }}
                         </span>
@@ -229,66 +169,39 @@
                     <div class="mb-4">
                       <label class="form-label-name">{{
                         resourceModel.account
-                      }}</label>
+                        }}</label>
                       <div class="form-group">
-                        <select
-                          [formControl]="accountDrp"
-                          class="form-control downArrow"
-                          (change)="changeAccount($event)"
-                          #account
-                        >
+                        <select [formControl]="accountDrp" class="form-control downArrow"
+                          (change)="changeAccount($event)" #account>
                           <option value="">Select</option>
-                          <option
-                            *ngFor="let item of accountArry"
-                            [value]="item.domainid"
-                          >
+                          <option *ngFor="let item of accountArry" [value]="item.domainid">
                             {{ item.name }}
                           </option>
                         </select>
                       </div>
                     </div>
                     <div
-                      class="form-group mb-4 d-flex align-items-center justify-content-between w-100 position-relative"
-                    >
+                      class="form-group mb-4 d-flex align-items-center justify-content-between w-100 position-relative">
                       <label class="form-label-btn w-100">{{
                         resourceModel.previewImage
-                      }}</label>
-                      <label
-                        class="select"
-                        style="color: #fff; text-transform: uppercase"
-                      >
+                        }}</label>
+                      <label class="select" style="color: #fff; text-transform: uppercase">
                         select
-                        <input
-                          #imageFile
-                          [formControl]="imageFileControl"
-                          type="file"
-                          accept="image/*"
-                          (change)="onFileChanged($event.target.files, 'img')"
-                          hidden
-                        />
+                        <input #imageFile [formControl]="imageFileControl" type="file" accept="image/*"
+                          (change)="onFileChanged($event.target.files, 'img')" hidden />
                       </label>
                       <span class="imageName">{{ imageName }}</span>
                     </div>
 
                     <div
-                      class="form-group mb-4 d-flex align-items-center justify-content-between w-100 position-relative"
-                    >
+                      class="form-group mb-4 d-flex align-items-center justify-content-between w-100 position-relative">
                       <label class="form-label-btn w-100">{{
                         resourceModel.Templatebundle
-                      }}</label>
-                      <label
-                        class="select"
-                        style="color: #fff; text-transform: uppercase"
-                      >
+                        }}</label>
+                      <label class="select" style="color: #fff; text-transform: uppercase">
                         select
-                        <input
-                          #file
-                          [formControl]="fileControl"
-                          type="file"
-                          (change)="onFileChanged($event.target.files, 'htr')"
-                          accept=".htr"
-                          hidden
-                        />
+                        <input #file [formControl]="fileControl" type="file"
+                          (change)="onFileChanged($event.target.files, 'htr')" accept=".htr" hidden />
                       </label>
                       <span class="imageName">{{ fileName }}</span>
                     </div>
@@ -304,29 +217,20 @@
               <div class="col-12 text-end">
                 <ul class="list-inline">
                   <li class="list-inline-item">
-                    <button
-                      type="button"
-                      class="cancel"
-                      style="color: #fff; text-transform: uppercase"
-                      (click)="cancel()"
-                    >
+                    <button type="button" class="cancel" style="color: #fff; text-transform: uppercase"
+                      (click)="cancel()">
                       CANCEL
                     </button>
                   </li>
                   <li class="list-inline-item">
-                    <button
-                      type="button"
-                      class="select"
-                      style="color: #fff; text-transform: uppercase; border: 0"
-                      (click)="save()"
-                      [disabled]="
+                    <button type="button" class="select" style="color: #fff; text-transform: uppercase; border: 0"
+                      (click)="save()" [disabled]="
                         !(
                           ItemForm.valid &&
                           !!fileControl.value &&
                           !!imageFileControl.value
                         )
-                      "
-                    >
+                      ">
                       {{ !!ItemForm.controls.fID.value ? "UPDATE" : "CREATE" }}
                     </button>
                   </li>
@@ -340,15 +244,8 @@
   </form>
 </div>
 
-<div
-  class="modal fade"
-  id="exampleModal"
-  data-backdrop="static"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -356,31 +253,16 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <input
-            type="text"
-            [(ngModel)]="typeString"
-            (keyup)="keyUpVlidation($event)"
-            class="form-control"
-            id="inputPassword2"
-          />
+          <input type="text" [(ngModel)]="typeString" (keyup)="keyUpVlidation($event)" class="form-control"
+            id="inputPassword2" />
         </div>
       </div>
       <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-danger"
-          data-dismiss="modal"
-          #closebutton
-          (click)="closePopup()"
-        >
+        <button type="button" class="btn btn-danger" data-dismiss="modal" #closebutton (click)="closePopup()">
           Close
         </button>
-        <button
-          type="button"
-          [disabled]="typeString == '' ? true : false"
-          class="btn btn-primary"
-          (click)="createCategory()"
-        >
+        <button type="button" [disabled]="typeString == '' ? true : false" class="btn btn-primary"
+          (click)="createCategory()">
           Save
         </button>
       </div>

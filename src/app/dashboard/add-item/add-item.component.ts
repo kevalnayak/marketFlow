@@ -129,7 +129,7 @@ export class AddItemComponent implements OnInit {
           this.categoryDrp.updateValueAndValidity();
         }
       },
-      (err) => {}
+      (err) => { }
     );
   }
 
@@ -164,7 +164,7 @@ export class AddItemComponent implements OnInit {
             }
           }
         },
-        (err) => {}
+        (err) => { }
       );
   }
 
@@ -187,7 +187,7 @@ export class AddItemComponent implements OnInit {
           );
         }
       },
-      (err) => {}
+      (err) => { }
     );
   }
 
@@ -207,14 +207,10 @@ export class AddItemComponent implements OnInit {
       .subscribe(
         (res) => {
           if (res['errcode'] == 0) {
-            this.categoryArry = res['list'].map((x) => ({
-              value: x.themeid,
-              text: x.name,
-              count: x.count,
-            }));
+            this.categoryArry = res['list']
           }
         },
-        (err) => {}
+        (err) => { }
       );
   }
 
@@ -241,7 +237,7 @@ export class AddItemComponent implements OnInit {
         this.typeString = '';
         this.closebutton.nativeElement.click();
       },
-      (err) => {}
+      (err) => { }
     );
   }
 
@@ -275,19 +271,19 @@ export class AddItemComponent implements OnInit {
         !!this.templateData
           ? this.templateData.fStartDate
           : this.today.getFullYear() +
-            '-' +
-            (this.today.getMonth() + 1) +
-            '-' +
-            this.today.getDate(),
+          '-' +
+          (this.today.getMonth() + 1) +
+          '-' +
+          this.today.getDate(),
       ],
       fEndDate: [
         !!this.templateData
           ? this.templateData.fEndDate
           : this.nextDate.getFullYear() +
-            '-' +
-            (this.nextDate.getMonth() + 1) +
-            '-' +
-            this.nextDate.getDate(),
+          '-' +
+          (this.nextDate.getMonth() + 1) +
+          '-' +
+          this.nextDate.getDate(),
       ],
       fMovieMediaID: [-1],
       fMovieX: [0],
@@ -333,7 +329,7 @@ export class AddItemComponent implements OnInit {
       }
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
-      reader.onload = (_event) => {};
+      reader.onload = (_event) => { };
       this.payloadFile = new FormData();
       this.payloadFile.append('uploadedfile', fileToUpload);
     }
@@ -363,8 +359,7 @@ export class AddItemComponent implements OnInit {
         },
         (err) => {
           this.toaster.error(
-            `Something went wrong while uploading ${
-              type === 'img' ? 'Image' : 'file'
+            `Something went wrong while uploading ${type === 'img' ? 'Image' : 'file'
             }`
           );
         }
@@ -421,8 +416,8 @@ export class AddItemComponent implements OnInit {
     ) {
       const saveMethod = !!this.ItemForm.controls.fID.value
         ? this.loader.attach(
-            this.sharedService.updateTemplate(this.ItemForm.value)
-          )
+          this.sharedService.updateTemplate(this.ItemForm.value)
+        )
         : this.loader.attach(this.sharedService.create(this.ItemForm.value));
       saveMethod.subscribe(
         (res) => {
@@ -435,7 +430,7 @@ export class AddItemComponent implements OnInit {
             this.router.navigate(['/dashboard']);
           }
         },
-        (err) => {}
+        (err) => { }
       );
     }
   }
@@ -481,12 +476,17 @@ export class AddItemComponent implements OnInit {
       class: 'modal-sm',
     });
   }
-  // close() {
-  //   setTimeout(() => {
-  //     this.openDeleteModal(this.deleteModal);
-  //   }, 200);
-  // }
-
+  deleteModalclose() {
+    setTimeout(() => {
+      console.log(this.categoryDrp);
+      this.openDeleteModal(this.deleteModal);
+    }, 200);
+  }
+  changeFn(val) {
+    console.log("Dropdown selection:", val);
+    this.categoryDrp.setValue(val.themeid)
+    
+  }
   deleteCategory(event) {
     if (!!event) {
       this.openDeleteModal(this.deleteModal);
