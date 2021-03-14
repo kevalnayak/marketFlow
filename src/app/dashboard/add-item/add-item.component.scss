@@ -84,3 +84,11 @@ details[data-popover] > summary:focus {
     border-radius: 5px;
     background-color: red;
   }
+
+  .outsideToggle{
+    display: none;
+  }
+
+  .innerToggle{
+    display: flex;
+  }

@@ -5,7 +5,16 @@
 >
   <div class="box" (click)="toggle($event)">
     <div class="dropdown-selected" *ngIf="isSelectedValue">
-      <span>{{ optionText(selected) }}</span>
+      <span
+        >{{ optionText(selected) }}
+
+        <span
+          class="dropdown-close-custom pr-0"
+          (click)="deleteOption(selected)"
+          *ngIf="showIconOptionSelected(selected) === 0"
+          >X</span
+        >
+      </span>
     </div>
     <div class="dropdown-selected gray" *ngIf="!isSelectedValue">
       <span class="not-active">{{ placeholder }}</span>
@@ -22,7 +31,7 @@
         {{ optionText(i) }}
         <span
           class="dropdown-close-custom"
-          (click)="deleteOption(i, $event)"
+          (click)="deleteOption(i)"
           *ngIf="option.count === 0"
           >X</span
         >

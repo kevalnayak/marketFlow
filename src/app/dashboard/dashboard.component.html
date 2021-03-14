@@ -75,29 +75,33 @@
               class="sidebar-dropdown list-unstyled collapse"
               data-bs-parent="#sidebar"
             >
-              <li
-                class="sidebar-item"
-                *ngFor="let one of submenus[1]"
-                [class.active]="current === one.name"
-              >
-                <a
-                  class="sidebar-link"
-                  (click)="
-                    lvl1 = 'Landscape(' + submenus[1].length + ')';
-                    lvl2 = '';
-                    lvl3 = '';
-                    getLevels('second', one);
-                    current = one.name
-                  "
-                  [routerLink]=""
-                  >{{ one.name }} ({{ one.count }})</a
-                >
-              </li>
-              <!-- <li class="sidebar-item"><a class="sidebar-link" href="#">Projects </a></li>
+              <div class="scrollbar" id="style-2">
+                <div class="force-overflow">
+                  <li
+                    class="sidebar-item"
+                    *ngFor="let one of submenus[1]"
+                    [class.active]="current === one.name"
+                  >
+                    <a
+                      class="sidebar-link"
+                      (click)="
+                        lvl1 = 'Landscape(' + submenus[1].length + ')';
+                        lvl2 = '';
+                        lvl3 = '';
+                        getLevels('second', one);
+                        current = one.name
+                      "
+                      [routerLink]=""
+                      >{{ one.name }} ({{ one.count }})</a
+                    >
+                  </li>
+                  <!-- <li class="sidebar-item"><a class="sidebar-link" href="#">Projects </a></li>
                             <li class="sidebar-item"><a class="sidebar-link" href="#">Clients </a></li>
                             <li class="sidebar-item"><a class="sidebar-link" href="#">Pricing </a></li>
                             <li class="sidebar-item"><a class="sidebar-link" href="#">Chat </a></li>
                             <li class="sidebar-item"><a class="sidebar-link" href="#">Blank Page</a></li> -->
+                </div>
+              </div>
             </ul>
           </li>
         </ul>
@@ -145,18 +149,18 @@
       <main class="content">
         <div class="container-fluid p-0">
           <div class="row mb-2 mb-xl-3">
-            <div class="col-auto text-start mt-n1 mb-4 ml-2">
+            <div class="col-auto text-start mb-4 ml-4">
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
                   <li class="breadcrumb-item active" *ngIf="lvl1">
-                    Templates >
+                    Templates &nbsp;&nbsp;>
                   </li>
 
                   <li class="breadcrumb-item active" aria-current="page">
-                    {{ lvl1 }}<span *ngIf="lvl2"> ></span>
+                    {{ lvl1 }}<span *ngIf="lvl2"> &nbsp;&nbsp;></span>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">
-                    {{ lvl2 }}<span *ngIf="lvl3">></span>
+                    {{ lvl2 }}<span *ngIf="lvl3"> &nbsp;&nbsp;></span>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">
                     {{ lvl3 }}
@@ -167,7 +171,7 @@
 
             <div class="row" *ngIf="tabs.length > 0">
               <div class="col-12 col-lg-12">
-                <div class="tab">
+                <div class="tab tabs-dashboard">
                   <ul class="nav nav-tabs" role="tablist">
                     <li
                       class="nav-item"
@@ -189,7 +193,7 @@
                                         <li class="nav-item"><a class="nav-link" href="#tab-4" data-bs-toggle="tab"
                                                 role="tab">반려동물 (6)</a></li> -->
                   </ul>
-                  <div class="tab-content">
+                  <div class="tab-content dashboard-items p-0">
                     <div
                       class="tab-pane active d-flex"
                       id="tab-{{ tabContentIndex }}"
@@ -200,7 +204,9 @@
                         id="{{ j }}"
                         *ngFor="let template of templateList; let j = index"
                       >
-                        <span *ngIf="template.isNew">New</span>
+                        <span *ngIf="template.isNew" class="new-badge"
+                          >New</span
+                        >
                         <img
                           src="{{
                             downloadUrl + template.fPreviewMediaID + '.jpg'
@@ -293,7 +299,7 @@
   </div>
 </div>
 <ng-template #deleteModal>
-  <div class="modal-dialog modal-sm" role="document">
+  <div class="modal-dialog w-100 m-0" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Delete</h5>

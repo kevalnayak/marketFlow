@@ -126,8 +126,7 @@ export class DropdownComponent implements ControlValueAccessor {
     this.change.emit(value);
   }
 
-  deleteOption(id, event) {
-    event.stopPropagation();
+  deleteOption(id) {
     this.deleteOptionSelected = id;
     this.isOpen = false;
     const value = this.optionValue(this.deleteOptionSelected);

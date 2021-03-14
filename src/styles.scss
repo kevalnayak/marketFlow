@@ -1989,7 +1989,7 @@ progress {
     float: right;
     right: 0px;
     background-color: #FA0000;
-    padding: 10px 20px;
+    padding: 7px 19px;
     color: #fff;
     text-transform: uppercase;
 	border:0;
@@ -13271,7 +13271,6 @@ footer.footer ul {
 
 .hamburger:after {
 	bottom: -7.5px;
-	width: 16px;
 	position: absolute
 }
 
@@ -28317,4 +28316,22 @@ opacity: 0.9;
     display: flex !important;
     align-items: center;
     justify-content: center;
+}
+.toggle-sidebar {
+    position: absolute;
+    right: 0;
+    top: 20px;
+}
+.sidebar-content {
+    position: relative;
+}
+.content .breadcrumb {
+    font-size: 17px;
+    font-weight: 400;
+}
+.tabs-dashboard .nav-link {
+    padding: 12px 29px !important;
+}
+.dashboard-items .tab-pane:not(:empty) {
+    padding: 20px 30px;
 }
