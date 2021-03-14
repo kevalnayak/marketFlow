@@ -4,7 +4,8 @@
 }
 
 select.form-control:not([size]):not([multiple]) {
-    height: auto;
+    height: initial;
+    min-height: 36px;
 }
 
 .disableLink {

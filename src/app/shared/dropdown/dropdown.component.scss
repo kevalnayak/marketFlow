@@ -1,0 +1,188 @@
+:host {
+    outline: none !important;
+    &:focus {
+      outline: none !important;
+    }
+}
+
+.dropdown-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 36px;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    overflow: hidden;
+
+    outline: none !important;
+    &:focus {
+        outline: none !important;
+    }
+
+    &.focus {
+        border: 1px solid #666;
+    }
+
+    &.disabled
+    {
+      pointer-events: none;
+      background-color: #e9ecef;
+      opacity: 0.7;
+    }
+
+    .box {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        width: 100%;
+    }
+
+    .dropdown-selected {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        font-size: 0.875rem;
+        line-height: 20px;
+        color:black;
+        overflow: hidden;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 13px;
+            right: 10PX;
+            width: 10px;
+            height: 10px;
+            background: url('/assets/img/downa.svg') no-repeat center;
+        }
+
+        span {
+            display: inline-block;
+            padding-right: 20px;
+            margin-left: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .dropdown-options {
+        width: 100%;
+        padding: 0;
+        display: none;
+        position: absolute;
+        overflow-y: visible;
+        z-index: 999;
+        outline: none;
+        li {
+            height: 20px;
+            font-size: 0.875rem;
+            line-height: 20px;
+            color: black;
+            position: relative;
+            list-style-type: none;
+            padding-left: 5px;
+            background: #2e373c;
+            width: 100%;
+            padding: 1px 10px;
+            height: auto;
+
+            &:last-child {
+                border-bottom: none;
+            }
+            &:hover {
+                background-color: #395ee6;
+                color: white;
+                border-bottom-color: transparent;
+            }
+            &.active {
+                background-color: #395ee6;
+                color: white;
+                border-bottom-color: transparent;
+            }
+        }
+    }
+
+    &.is-open {
+        overflow: visible;
+        .dropdown-selected {
+            &::after {
+                content: "";
+                position: absolute;
+                top:13px;
+                right: 10px;
+                width: 10px;
+                height: 10px;
+                background: url('/assets/img/downa.svg') no-repeat center;
+            }
+        }
+        .dropdown-options {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                    flex-direction: column;
+            width: 100%;
+            margin-top: 35px;
+
+            background-color: white;
+            border: 1px solid #666;
+            -webkit-box-shadow: 0px 3px 11px 0 rgba(1, 2, 2, 0.14);
+                    box-shadow: 0px 3px 11px 0 rgba(1, 2, 2, 0.14);
+            left: 0;
+            top: -7px;
+            width: 100%;
+            min-width: 100%;
+            border: 1px solid #2c2b2b;
+            box-shadow: 4px 4px 5px rgb(0 0 0 / 11%);
+            border-radius: 2px;
+        }
+    }
+}
+
+.not-active {
+    color: #666;
+}
+.inner-dropdown {
+    border: none !important;
+    color: #fff !important;
+    min-height: initial !important;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    height: 100% !important;
+    top: 0;padding: 0 0 0 7px;
+}
+.dropdown-close-custom {
+    color: #fff;
+    background: red;
+    text-transform: lowercase;
+    width: 13px;
+    display: inline-block;
+    vertical-align: middle;
+    height: 13px;
+    text-align: center;
+    border-radius: 99px;
+    line-height: 0;
+    font-size: 12px;
+    padding: 0px 0 1px 0;
+    margin: 0 0 0 3px;
+}
+
+.inner-dropdown * {
+    color: #fff !important;
+    line-height: 1;
+    height: auto;
+    min-height: initial;
+}

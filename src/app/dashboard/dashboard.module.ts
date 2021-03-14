@@ -6,6 +6,7 @@ import { AddItemComponent } from './add-item/add-item.component';
 import { SharedModule } from '../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 
+
 const routes: Routes = [
   {
     path: '',
@@ -20,7 +21,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [DashboardComponent, AddItemComponent],
   imports: [
-    CommonModule,
+  CommonModule,
     SharedModule,
     RouterModule.forChild(routes),
     NgSelectModule

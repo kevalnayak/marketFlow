@@ -1999,7 +1999,7 @@ progress {
     float: right;
     right: 0px;
     background-color: #1FA8D7;
-    padding: 10px 20px;
+    padding: 7px 19px;
     color: #fff;
     text-transform: uppercase;
 }
@@ -2010,6 +2010,7 @@ progress {
     float: left;
     height: 100%;
     border: 1px solid #cacaca;
+	padding: 30px 55px;
 }
 
 .form-label-name {
@@ -2018,6 +2019,10 @@ progress {
     font-weight: 700;
     float: left;
     width: 100%;
+}
+.form-label-btn,.form-label-name{
+	font-size: 16px;
+    font-weight: 500 !important;
 }
 
 .form-control-name {
@@ -2289,15 +2294,16 @@ textarea.form-control-lg {
     line-height: 1.5;
     color: #ffffff;
     background-color: #29363d;
-    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23ffffff99' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right .7rem center;
     background-size: 16px 12px;
-    border: 1px solid #1FA8D7;
-    border-radius: .2rem;
+    border: 2px solid #1FA8D7;
+    border-radius: .4rem !important;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+	min-height:33px;
 }
 
 .form-select:focus {
@@ -2384,12 +2390,15 @@ textarea.form-control-lg {
 }
 
 .form-check-input:checked {
-	background-color: #3b7ddd;
-	border-color: #3b7ddd
+	background-color: #eeeeee;
+	border-color: #3798dc
+}
+.form-check-input:checked+.form-check-label{
+	color:#3798dc;
 }
 
 .form-check-input:checked[type=checkbox] {
-	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/%3E%3C/svg%3E")
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='none' stroke='%233798dc' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3 6-6'/%3E%3C/svg%3E")
 }
 
 .form-check-input:checked[type=radio] {
@@ -28240,7 +28249,7 @@ opacity: 0.9;
     line-height: 1.5;
     color: #757575;
     background-color: #fafafa;
-    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right .7rem center;
     background-size: 16px 12px;
@@ -28261,4 +28270,51 @@ opacity: 0.9;
 .form-label-btn {
     color: #666666;
     font-weight: 700;
+}
+.plus-btn .drp-dwn {
+    width: 26px;
+}
+.plus-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.imageName {
+    position: absolute;
+    bottom: -14px;
+    color: #999;
+    font-style: italic;
+    right: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.col-xl-6.col-lg-6.col-xs-12.col-sm-12.backImg {
+    background-size: 250px;
+	background-image:url('assets/grey-and-white.jpg');
+}
+
+
+
+.nav-link.dropdown-toggle::after {
+    padding: 4px;
+    margin-top: -4px;
+    margin-bottom: 0;
+    margin-right: 0px;
+    margin-left: 10px;
+    color: #999;
+}
+
+.nav-link.dropdown-toggle .text-dark {
+    color: #999 !important;
+    font-size: 16px;
+    line-height: 1.3;
+    margin: 0px 2px 0px 4px;
+}
+
+.nav-link.dropdown-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
 }

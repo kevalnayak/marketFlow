@@ -37,7 +37,7 @@ export class AddItemComponent implements OnInit {
     { themeid: '1', name: 'Landscaape' },
   ];
   industryArry = [];
-  categoryArry = [];
+  categoryArry: { value: string; text: string; count: number }[];
   accountArry = [];
   resourceModel: any = {};
   uid: any;
@@ -58,6 +58,7 @@ export class AddItemComponent implements OnInit {
   isUploadImageChange = false;
   isUploadFileChange = false;
   allLevels = [];
+  deleteId: number;
   @ViewChild('file', { static: false }) file: ElementRef;
   @ViewChild('imageFile', { static: false }) imageFile: ElementRef;
   @ViewChild('orientation', { static: false }) orientation: ElementRef;
@@ -67,7 +68,7 @@ export class AddItemComponent implements OnInit {
   @ViewChild('checkPrivate', { static: true }) checkPrivate: ElementRef;
   @ViewChild('closebutton') closebutton: ElementRef;
   @ViewChild('account', { static: true }) account: ElementRef;
-  @ViewChild('deleteModal', { static: false }) private deleteModal;
+  @ViewChild('deleteModal', { static: false }) deleteModal: TemplateRef<any>;
   constructor(
     public fb: FormBuilder,
     private sharedService: SharedService,
@@ -128,7 +129,7 @@ export class AddItemComponent implements OnInit {
           this.categoryDrp.updateValueAndValidity();
         }
       },
-      (err) => { }
+      (err) => {}
     );
   }
 
@@ -163,7 +164,7 @@ export class AddItemComponent implements OnInit {
             }
           }
         },
-        (err) => { }
+        (err) => {}
       );
   }
 
@@ -186,7 +187,7 @@ export class AddItemComponent implements OnInit {
           );
         }
       },
-      (err) => { }
+      (err) => {}
     );
   }
 
@@ -200,22 +201,26 @@ export class AddItemComponent implements OnInit {
     }
   }
 
-  getCategoryList(id) {
-    this.loader.attach(this.sharedService.getIndustry(Number(id))).subscribe(
-      (res) => {
-        if (res['errcode'] == 0) {
-          this.categoryArry = res['list'];
-        }
-      },
-      (err) => { }
-    );
+  async getCategoryList(id) {
+    await this.loader
+      .attach(this.sharedService.getIndustry(Number(id)))
+      .subscribe(
+        (res) => {
+          if (res['errcode'] == 0) {
+            this.categoryArry = res['list'].map((x) => ({
+              value: x.themeid,
+              text: x.name,
+              count: x.count,
+            }));
+          }
+        },
+        (err) => {}
+      );
   }
 
   changeCategory(event) {
-    if (!!event.currentTarget.value) {
-      this.ItemForm.controls.fThemeID.setValue(
-        Number(event.currentTarget.value)
-      );
+    if (!!event) {
+      this.ItemForm.controls.fThemeID.setValue(event);
     }
   }
 
@@ -236,7 +241,7 @@ export class AddItemComponent implements OnInit {
         this.typeString = '';
         this.closebutton.nativeElement.click();
       },
-      (err) => { }
+      (err) => {}
     );
   }
 
@@ -270,19 +275,19 @@ export class AddItemComponent implements OnInit {
         !!this.templateData
           ? this.templateData.fStartDate
           : this.today.getFullYear() +
-          '-' +
-          (this.today.getMonth() + 1) +
-          '-' +
-          this.today.getDate(),
+            '-' +
+            (this.today.getMonth() + 1) +
+            '-' +
+            this.today.getDate(),
       ],
       fEndDate: [
         !!this.templateData
           ? this.templateData.fEndDate
           : this.nextDate.getFullYear() +
-          '-' +
-          (this.nextDate.getMonth() + 1) +
-          '-' +
-          this.nextDate.getDate(),
+            '-' +
+            (this.nextDate.getMonth() + 1) +
+            '-' +
+            this.nextDate.getDate(),
       ],
       fMovieMediaID: [-1],
       fMovieX: [0],
@@ -328,7 +333,7 @@ export class AddItemComponent implements OnInit {
       }
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
-      reader.onload = (_event) => { };
+      reader.onload = (_event) => {};
       this.payloadFile = new FormData();
       this.payloadFile.append('uploadedfile', fileToUpload);
     }
@@ -358,7 +363,8 @@ export class AddItemComponent implements OnInit {
         },
         (err) => {
           this.toaster.error(
-            `Something went wrong while uploading ${type === 'img' ? 'Image' : 'file'
+            `Something went wrong while uploading ${
+              type === 'img' ? 'Image' : 'file'
             }`
           );
         }
@@ -383,7 +389,7 @@ export class AddItemComponent implements OnInit {
     this.payloadFile = '';
     this.orientation.nativeElement.value = '';
     this.industryType.nativeElement.value = '';
-    this.category.nativeElement.value = '';
+    //this.category.nativeElement.value = '';
     this.imageFile.nativeElement.value = '';
     this.account.nativeElement.value = '';
     this.file.nativeElement.value = '';
@@ -415,8 +421,8 @@ export class AddItemComponent implements OnInit {
     ) {
       const saveMethod = !!this.ItemForm.controls.fID.value
         ? this.loader.attach(
-          this.sharedService.updateTemplate(this.ItemForm.value)
-        )
+            this.sharedService.updateTemplate(this.ItemForm.value)
+          )
         : this.loader.attach(this.sharedService.create(this.ItemForm.value));
       saveMethod.subscribe(
         (res) => {
@@ -429,7 +435,7 @@ export class AddItemComponent implements OnInit {
             this.router.navigate(['/dashboard']);
           }
         },
-        (err) => { }
+        (err) => {}
       );
     }
   }
@@ -471,11 +477,23 @@ export class AddItemComponent implements OnInit {
   }
 
   openDeleteModal(template) {
-    this.modalRef = this.modalService.show(template);
+    this.modalRef = this.modalService.show(template, {
+      class: 'modal-sm',
+    });
   }
-  close() {
-    setTimeout(() => {      
+  // close() {
+  //   setTimeout(() => {
+  //     this.openDeleteModal(this.deleteModal);
+  //   }, 200);
+  // }
+
+  deleteCategory(event) {
+    if (!!event) {
       this.openDeleteModal(this.deleteModal);
-    }, 200);
+    }
+  }
+
+  close() {
+    this.modalRef.hide();
   }
 }

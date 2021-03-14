@@ -1,0 +1,32 @@
+<div
+  class="dropdown-wrapper outline-none inner-dropdown {{ className }}"
+  [ngClass]="{ 'is-open': isOpen, disabled: isReadOnly, focus: isFocused }"
+  (contextmenu)="$event.stopPropagation()"
+>
+  <div class="box" (click)="toggle($event)">
+    <div class="dropdown-selected" *ngIf="isSelectedValue">
+      <span>{{ optionText(selected) }}</span>
+    </div>
+    <div class="dropdown-selected gray" *ngIf="!isSelectedValue">
+      <span class="not-active">{{ placeholder }}</span>
+    </div>
+  </div>
+
+  <ul class="dropdown-options">
+    <ng-container>
+      <li
+        *ngFor="let option of options; let i = index"
+        [class.active]="selected === i"
+        (click)="optionSelect(i, $event)"
+      >
+        {{ optionText(i) }}
+        <span
+          class="dropdown-close-custom"
+          (click)="deleteOption(i, $event)"
+          *ngIf="option.count === 0"
+          >X</span
+        >
+      </li>
+    </ng-container>
+  </ul>
+</div>

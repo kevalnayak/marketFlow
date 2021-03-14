@@ -8,23 +8,41 @@
 
         <ul class="sidebar-nav">
           <li class="sidebar-item active">
-            <a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link">
-              <span class="align-middle"><img class="sidemenu_icon mr-4"
-                  src="../../assets/portrait_white.png" />Portrait ({{ submenus[0].length }})
+            <a
+              data-bs-target="#dashboards"
+              data-bs-toggle="collapse"
+              class="sidebar-link"
+            >
+              <span class="align-middle"
+                ><img
+                  class="sidemenu_icon mr-4"
+                  src="../../assets/portrait_white.png"
+                />Portrait ({{ submenus[0].length }})
               </span>
             </a>
 
-            <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse show">
+            <ul
+              id="dashboards"
+              class="sidebar-dropdown list-unstyled collapse show"
+            >
               <div class="scrollbar" id="style-2">
                 <div class="force-overflow">
-                  <li class="sidebar-item" *ngFor="let one of submenus[0]" [class.active]="current === one.name">
-                    <a class="sidebar-link" [routerLink]="" (click)="
+                  <li
+                    class="sidebar-item"
+                    *ngFor="let one of submenus[0]"
+                    [class.active]="current === one.name"
+                  >
+                    <a
+                      class="sidebar-link"
+                      [routerLink]=""
+                      (click)="
                         lvl1 = 'Portrait(' + submenus[0].length + ')';
                         lvl2 = '';
                         lvl3 = '';
                         getLevels('second', one);
                         current = one.name
-                      ">{{ one.name }} ({{ one.count }})
+                      "
+                      >{{ one.name }} ({{ one.count }})
                     </a>
                   </li>
                   <!-- <li class="sidebar-item"><a class="sidebar-link" href="#">유익정보 (15)
@@ -39,19 +57,41 @@
           </li>
 
           <li class="sidebar-item active">
-            <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
-              <span class="align-middle"><img class="sidemenu_icon mr-4" src="../../assets/landscape_white.png" />
-                Landscape ({{ submenus[1].length }})</span>
+            <a
+              data-bs-target="#pages"
+              data-bs-toggle="collapse"
+              class="sidebar-link collapsed"
+            >
+              <span class="align-middle"
+                ><img
+                  class="sidemenu_icon mr-4"
+                  src="../../assets/landscape_white.png"
+                />
+                Landscape ({{ submenus[1].length }})</span
+              >
             </a>
-            <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-              <li class="sidebar-item" *ngFor="let one of submenus[1]" [class.active]="current === one.name">
-                <a class="sidebar-link" (click)="                    
+            <ul
+              id="pages"
+              class="sidebar-dropdown list-unstyled collapse"
+              data-bs-parent="#sidebar"
+            >
+              <li
+                class="sidebar-item"
+                *ngFor="let one of submenus[1]"
+                [class.active]="current === one.name"
+              >
+                <a
+                  class="sidebar-link"
+                  (click)="
                     lvl1 = 'Landscape(' + submenus[1].length + ')';
                     lvl2 = '';
                     lvl3 = '';
                     getLevels('second', one);
                     current = one.name
-                  " [routerLink]="">{{ one.name }} ({{ one.count }})</a>
+                  "
+                  [routerLink]=""
+                  >{{ one.name }} ({{ one.count }})</a
+                >
               </li>
               <!-- <li class="sidebar-item"><a class="sidebar-link" href="#">Projects </a></li>
                             <li class="sidebar-item"><a class="sidebar-link" href="#">Clients </a></li>
@@ -74,12 +114,24 @@
         <div class="navbar-collapse collapse">
           <ul class="navbar-nav navbar-align">
             <li class="nav-item dropdown">
-              <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+              <a
+                class="nav-icon dropdown-toggle d-inline-block d-sm-none"
+                href="#"
+                data-bs-toggle="dropdown"
+              >
                 <i class="align-middle" data-feather="settings"></i>
               </a>
 
-              <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                <img src="assets/icons/account_icon.png" class="avatar img-fluid me-1" alt="user" />
+              <a
+                class="nav-link dropdown-toggle d-none d-sm-inline-block"
+                href="#"
+                data-bs-toggle="dropdown"
+              >
+                <img
+                  src="assets/icons/account_icon.png"
+                  class="avatar img-fluid me-1"
+                  alt="user"
+                />
                 <span class="text-dark">{{ userName }}</span>
               </a>
               <div class="dropdown-menu dropdown-menu-end">
@@ -117,9 +169,18 @@
               <div class="col-12 col-lg-12">
                 <div class="tab">
                   <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item" *ngFor="let one of tabs; let i = index">
-                      <a class="nav-link" data-bs-toggle="tab" role="tab" href="#tab-{{ i }}"
-                        (click)="getTemplates(one.themeid, i); lvl2 = one.name">{{ one.name }} ({{ one.count }})</a>
+                    <li
+                      class="nav-item"
+                      *ngFor="let one of tabs; let i = index"
+                    >
+                      <a
+                        class="nav-link"
+                        data-bs-toggle="tab"
+                        role="tab"
+                        href="#tab-{{ i }}"
+                        (click)="getTemplates(one.themeid, i); lvl2 = one.name"
+                        >{{ one.name }} ({{ one.count }})</a
+                      >
                     </li>
                     <!-- <li class="nav-item"><a class="nav-link" href="#tab-2" data-bs-toggle="tab"
                                                 role="tab">흡연금지 (8)</a></li>
@@ -129,19 +190,38 @@
                                                 role="tab">반려동물 (6)</a></li> -->
                   </ul>
                   <div class="tab-content">
-                    <div class="tab-pane active d-flex" id="tab-{{ tabContentIndex }}" role="tabpanel">
-                      <div class="tab-container ml-4" id="{{ j }}" *ngFor="let template of templateList; let j = index">
+                    <div
+                      class="tab-pane active d-flex"
+                      id="tab-{{ tabContentIndex }}"
+                      role="tabpanel"
+                    >
+                      <div
+                        class="tab-container ml-4"
+                        id="{{ j }}"
+                        *ngFor="let template of templateList; let j = index"
+                      >
                         <span *ngIf="template.isNew">New</span>
-                        <img src="{{
+                        <img
+                          src="{{
                             downloadUrl + template.fPreviewMediaID + '.jpg'
-                          }}" alt="Avatar" class="tab-image" style="width: 100%" />
+                          }}"
+                          alt="Avatar"
+                          class="tab-image"
+                          style="width: 100%"
+                        />
                         <div class="middle">
                           <div class="text">
-                            <img src="../../assets/edit_icon.png" (click)="editTemplate(template)" />
+                            <img
+                              src="../../assets/edit_icon.png"
+                              (click)="editTemplate(template)"
+                            />
                             <span><strong>EDIT</strong></span>
                           </div>
                           <div class="text">
-                            <img src="../../assets/delete.png" (click)="openDeleteModal(deleteModal,template)" />
+                            <img
+                              src="../../assets/delete.png"
+                              (click)="openDeleteModal(deleteModal, template)"
+                            />
                             <span><strong>DELETE</strong></span>
                           </div>
                         </div>
@@ -219,15 +299,22 @@
         <h5 class="modal-title">Delete</h5>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          Are you sure you want to delete ?
-        </div>
+        <div class="form-group">Are you sure you want to delete ?</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal" #closebutton>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+          #closebutton
+        >
           Close
         </button>
-        <button type="button" class="btn btn-primary" (click)="deleteTemplate()">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="deleteTemplate()"
+        >
           OK
         </button>
       </div>
